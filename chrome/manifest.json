@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+
+  "name": "EmojiPanel",
+  "short_name": "EmojiPanel",
+  "description": "Emoji Panel for Twitter",
+  "author": "Dan Bovey",
+  "version": "0.1",
+
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+
+  "permissions": [
+    "storage",
+    "*://*.twitter.com/*"
+  ],
+
+  "content_scripts": [ {
+    "css": [ "css/style.css" ],
+    "js": ["js/content.js" ],
+    "matches": [ "http://*.twitter.com/*", "https://*.twitter.com/*"]
+  }],
+
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "emojipanel",
+  "version": "1.0.0",
+  "description": "EmojiPanel for Twitter",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danbovey/EmojiPanel.git"
+  },
+  "author": "Dan Bovey <dan@danbovey.uk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danbovey/EmojiPanel/issues"
+  },
+  "homepage": "https://github.com/danbovey/EmojiPanel#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^13.0.1",
+    "colors": "^1.1.2",
+    "emojilib": "^2.0.2",
+    "event-stream": "^3.3.3",
+    "fs": "0.0.2",
+    "gulp": "^3.9.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.4",
+    "gulp-watch": "^4.3.8",
+    "run-sequence": "^1.2.2",
+    "twemoji": "^2.0.5",
+    "underscore": "^1.8.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
