@@ -27,10 +27,5 @@
   "web_accessible_resources": [
     "emojis.json",
     "img/emojis.svg"
-  ],
-
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
-  }
+  ]
 }

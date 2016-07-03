@@ -1,7 +1,15 @@
-![EmojiPanel Logo](http://i.imgur.com/9F6EeKe.png)
+![EmojiPanel Logo](http://i.imgur.com/Os8izFU.png)
 # EmojiPanel for Twitter
 
 An open-source Chrome Extension that adds a dropdown panel with all emojis to the Twitter tweet box :heart_eyes:.
+
+## Preview
+
+![Screenshot](http://i.imgur.com/fsr32JX.png)
+
+## Download
+
+Coming soon on the Chrome Web Store :clock7:
 
 ## A note on maintainability
 

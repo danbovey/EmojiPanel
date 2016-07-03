@@ -147,7 +147,16 @@ var EmojiPanel = {
                         btn.dataset.originalTitle = 'Add emoji';
                         btn.style.opacity = 1;
                         btn.setAttribute('aria-haspopup', false);
-                        btn.innerHTML = '<span class="Icon Icon--smiley"></span><span class="text u-hiddenVisually">Add emoji</span>';
+
+                        var icon = document.createElement('span');
+                        icon.classList.add('Icon', 'Icon--smiley');
+                        icon.style.color = window.getComputedStyle(document.querySelector('.TweetBoxExtras-item .Icon')).color;
+                        btn.appendChild(icon);
+
+                        var tooltip = document.createElement('span');
+                        tooltip.classList.add('text', 'u-hiddenVisually');
+                        tooltip.innerHTML = 'Add emoji';
+                        btn.appendChild(tooltip);
 
                         btn.addEventListener('click', function() {
                             if(dropdown.classList.toggle('open')) {
