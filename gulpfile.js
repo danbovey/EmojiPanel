@@ -3,7 +3,6 @@ var watch = require('gulp-watch');
 var notify = require('gulp-notify');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
-var rename = require('gulp-rename');
 
 var browserify = require('browserify');
 var uglify = require('gulp-uglify');
@@ -13,11 +12,8 @@ var es = require('event-stream');
 var runSequence = require('run-sequence');
 
 gulp.task('scss', function() {
-    return gulp.src('scss/app.scss')
-        .pipe(sourcemaps.init())
-        .pipe(sass())
-        .pipe(sourcemaps.write())
-        .pipe(rename('style.css'))
+    return gulp.src('scss/style.scss')
+        .pipe(sass({outputStyle: 'compressed'}))
         .pipe(gulp.dest('chrome/css'))
         .pipe(notify("Compiled SCSS"));
 });

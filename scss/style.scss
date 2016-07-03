@@ -1,0 +1,66 @@
+.EmojiPanel .Icon--smiley {
+    opacity: 0.8;
+}
+
+.EmojiPanel-dropdownMenu.dropdown-menu {
+    padding: 0;
+    width: 300px;
+
+    .EmojiPanel-content.Caret:before, .EmojiPanel-dropdownMenu .EmojiPanel-content.Caret:after {
+        left: 24px;
+        border-width: 8px;
+    }
+    .EmojiPanel-content.Caret:before {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+    .EmojiPanel-content.Caret:after {
+        border-color: #FFF;
+    }
+    
+    .EmojiPanel-query {
+        position: relative;
+        margin: 0;
+        padding: 8px;
+        border-bottom: 1px solid #E1E8ED;
+        border-radius: 4px 4px 0 0;
+        background-color: #F5F8FA;
+        background-repeat: repeat-x;
+        background-image: linear-gradient(#FFF, #F5F8FA);
+        
+        .EmojiPanel-queryInput[type="text"] {
+            width: 100%;
+            padding: 4px 4px 4px 24px;
+            transition: none;
+            box-sizing: border-box;
+        }
+        .Icon--search {
+            position: absolute;
+            top: 13px;
+            left: 16px;
+            color: #66757F;
+        }
+    }
+    
+    .EmojiPanel-results {
+        overflow: auto;
+        min-height: 270px;
+        max-height: 810px;
+        padding: 3px 6px;
+        will-change: transform;
+
+        .emoji {
+            width: 20px;
+            height: 20px;
+            margin: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+    }
+    .EmojiPanel-noResults {
+        display: none;
+        width: 100%;
+        padding: 100px 0;
+        text-align: center;
+        color: #8899A6;
+    }
+}
