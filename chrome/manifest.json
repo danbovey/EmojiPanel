@@ -5,7 +5,7 @@
   "short_name": "EmojiPanel",
   "description": "Emoji dropdown panel for twitter.com",
   "author": "Dan Bovey",
-  "version": "1.0.2",
+  "version": "1.0.3",
 
   "permissions": [
     "storage",
