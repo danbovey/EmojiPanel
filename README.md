@@ -19,3 +19,4 @@ The reason I made this package, despite there being quite a few alternatives on 
 
 - Smiley Icon from Twitter's (hopefully open source) Rosetta icon font.
 - Twemoji graphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
+- Inspired by EmojiT by @garridev and Slack's [Emoji Deluxe](https://get.slack.help/hc/en-us/articles/202931348-Emoji-and-emoticons)
