@@ -9,7 +9,7 @@ An open-source Chrome Extension that adds a dropdown panel with all emojis to th
 
 ## Download
 
-Coming soon on the Chrome Web Store :clock7:
+### [Download for Google Chrome](https://chrome.google.com/webstore/detail/gndnmajcnnbidkknfijkbfhhnlibmmdo)
 
 ## A note on maintainability
 
