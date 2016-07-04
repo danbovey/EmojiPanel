@@ -3,6 +3,11 @@
 
 An open-source Chrome Extension that adds a dropdown panel with all emojis to the Twitter tweet box :heart_eyes:.
 
+- One click adds the emoji into the tweet editor
+- Search for emojis using keywords <- More coming soon
+- No ads
+- Retina graphics
+
 ## Preview
 
 ![Screenshot](http://i.imgur.com/fsr32JX.png)
