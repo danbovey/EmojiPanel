@@ -300,16 +300,16 @@ var EmojiPanel = {
                             results.style.height = '160px';
 
                             if(self.options.frequent.enabled == true) {
+                                var frequentResults = document.createElement('div');
+                                frequentResults.classList.add('EmojiPanel-frequent');
+
                                 var frequentTitle = document.createElement('p');
                                 frequentTitle.classList.add('category-title', 'EmojiPanel-frequentTitle');
                                 frequentTitle.innerHTML = 'Frequently used';
                                 if(self.options.frequent.list.length == 0) {
                                     frequentTitle.style.display = 'none';
                                 }
-                                results.appendChild(frequentTitle);
-
-                                var frequentResults = document.createElement('div');
-                                frequentResults.classList.add('EmojiPanel-frequent');
+                                frequentResults.appendChild(frequentTitle);
 
                                 var top = _.filter(self.options.frequent.list, function(e) {
                                     return e.count > 9;
@@ -387,19 +387,20 @@ var EmojiPanel = {
                                     var matched = [];
                                     var emojis = results.querySelectorAll('.emoji');
                                     var titles = results.querySelectorAll('.category-title');
+                                    var noResults = results.querySelector('.EmojiPanel-noResults');
 
                                     var value = e.target.value;
                                     value = value.replace(/-/g, '').toLowerCase();
                                     if(value.length > 0) {
                                         _.each(self.json, function(category) {
                                             _.each(category.emojis, function(emoji) {
-                                                var matched = _.find(emoji.keywords, function(keyword) {
+                                                var keywordMatch = _.find(emoji.keywords, function(keyword) {
                                                     keyword = keyword.replace(/-/g, '').toLowerCase();
 
                                                     return keyword.indexOf(value) > -1;
                                                 });
                                                 
-                                                if(matched) {
+                                                if(keywordMatch) {
                                                     matched.push(emoji.hex);
                                                 }
                                             });
@@ -423,6 +424,10 @@ var EmojiPanel = {
                                             title.style.display = 'none';
                                         });
                                         searchTitle.style.display = 'block';
+
+                                        if(self.options.frequent.enabled == true) {
+                                            results.querySelector('.EmojiPanel-frequent').style.display = 'none';
+                                        }
                                     } else {
                                         [].forEach.call(emojis, function(emoji) {
                                             emoji.style.display = 'inline-block';
@@ -431,6 +436,11 @@ var EmojiPanel = {
                                             title.style.display = 'block';
                                         });
                                         searchTitle.style.display = 'none';
+                                        noResults.style.display = 'none';
+
+                                        if(self.options.frequent.enabled == true) {
+                                            results.querySelector('.EmojiPanel-frequent').style.display = 'block';
+                                        }
                                     }
                                 });
                             }
