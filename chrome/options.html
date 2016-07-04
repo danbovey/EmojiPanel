@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EmojiPanel for Twitter Options</title>
+    <style>
+        body {
+            padding: 10px;
+        }
+        button {
+            cursor: pointer;
+        }
+        h3 {
+            margin-top: 0;
+            font-weight: bold;
+        }
+        .group {
+            padding: 10px 0;
+        }
+        .group:first-child {
+            padding-top: 5px;
+        }
+        .option {
+            padding: 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="group">
+        <h3>Search</h3>
+        <div class="option">
+            <label>
+                <input type="checkbox" id="search"> Show the search box
+            </label>
+        </div>
+    </div>
+    <div class="group">
+        <h3>Frequently used</h3>
+        <p>You have used <span id="frequent-count">0</span> emojis!</p>
+        <div class="option">
+            <label>
+                <input type="checkbox" id="frequent"> Store my frequently used emojis
+            </label>
+        </div>
+        <div class="option">
+            <button type="button" id="btn-clear-frequent">Clear frequently used</button>
+        </div>
+    </div>
+    <div class="group">
+        <button type="button" id="save">Save</button>
+        <p id="status"></p>
+    </div>
+    <script src="js/options.js"></script>
+</body>
+</html>

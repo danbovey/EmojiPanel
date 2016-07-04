@@ -48,12 +48,24 @@
         padding: 3px 6px;
         will-change: transform;
 
+        .category-title {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
         .emoji {
-            width: 20px;
-            height: 20px;
-            margin: 5px;
+            width: 30px;
+            height: 30px;
+            border: 5px solid transparent;
+            border-radius: 3px;
             outline: none;
             cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover, &:focus {
+                background: #F1F1F1;
+                border-color: #F1F1F1;
+            }
         }
     }
     .EmojiPanel-noResults {

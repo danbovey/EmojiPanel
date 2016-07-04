@@ -21,6 +21,7 @@ gulp.task('scss', function() {
 gulp.task('js', function() {
     var files = [
         'js/content.js',
+        'js/options.js'
     ];
 
     var tasks = files.map(function(entry) {
