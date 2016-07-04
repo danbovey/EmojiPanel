@@ -6,6 +6,7 @@
   "description": "Emoji dropdown panel for twitter.com",
   "author": "Dan Bovey",
   "version": "1.0.3",
+  "minimum_chrome_version": "36",
 
   "permissions": [
     "storage",
