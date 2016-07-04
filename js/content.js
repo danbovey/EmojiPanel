@@ -1,12 +1,16 @@
-// chrome.storage.sync.set({
-//     frequent: []
-// });
-
 var _ = require('underscore');
 
 var EmojiPanel = {
+    options: {
+        search: {
+            enabled: true
+        },
+        frequent: {
+            enabled: true,
+            list: []
+        }
+    },
     json: {},
-    frequent: [],
     loadEmojis: function(callback) {
         var self = this;
 
@@ -50,23 +54,31 @@ var EmojiPanel = {
 
             input.textContent = input.textContent.substring(0, offset) + emoji.char + input.textContent.substring(offset, input.textContent.length);
 
-            this.addFrequent(emoji);
+            if(this.options.frequent.enabled == true) {
+                this.addFrequent(emoji);
+            }
         }
     },
-    loadFrequent: function(callback) {
+    loadStorage: function(callback) {
         var self = this;
 
-        chrome.storage.sync.get('frequent', function(items) {
-            self.frequent = items.frequent;
-
+        chrome.storage.sync.get(null, function(items) {
+            _.extend(self.options, items);
             callback();
         })
+    },
+    saveStorage: function(callback) {
+        chrome.storage.sync.set(this.options, function() {
+            if(typeof callback == 'function') {
+                callback();
+            }
+        });
     },
     addFrequent: function(emoji) {
         var self = this;
 
         var exists = false;
-        this.frequent = _.map(this.frequent, function(e) {
+        this.options.frequent.list = _.map(this.options.frequent.list, function(e) {
             if(e.hex == emoji.hex) {
                 e.count += 1;
                 exists = true;
@@ -76,22 +88,29 @@ var EmojiPanel = {
         });
 
         if(exists == false) {
+            if(this.options.frequent.list.length == 0) {
+                // The list is empty, so bring in the title
+                var frequentTitles = document.querySelectorAll('.EmojiPanel-frequentTitle');
+                [].forEach.call(frequentTitles, function(title) {
+                    title.style.display = 'block';
+                });
+            }
+
             emoji.count = 1;
-            this.frequent.push(emoji);
+            this.options.frequent.list.push(emoji);
         }
 
-        chrome.storage.sync.set({
-            frequent: this.frequent
+        this.saveStorage(function() {
+            self.sortFrequent();
         });
-        this.sortFrequent();
     },
     sortFrequent: function() {
         var self = this;
 
-        this.frequent = _.chain(this.frequent)
+        this.options.frequent.list = _.chain(this.options.frequent.list)
             .sortBy('hex')
             .sortBy('count');
-        this.frequent = this.frequent._wrapped.reverse();
+        this.options.frequent.list = this.options.frequent.list._wrapped.reverse();
 
         var allFrequentResults = document.querySelectorAll('.EmojiPanel-frequent');
         [].forEach.call(allFrequentResults, function(frequentResults) {
@@ -100,10 +119,10 @@ var EmojiPanel = {
                 frequentResults.removeChild(frequentResults.firstChild);
             }
             // Add the new sorted frequently used list
-            var top = _.filter(self.frequent, function(e) {
+            var top = _.filter(self.options.frequent.list, function(e) {
                 return e.count > 9;
             });
-            top = _.first(self.frequent, 9);
+            top = _.first(self.options.frequent.list, 9);
             _.each(top, function(emoji) {
                 var button = document.createElement('button');
                 button.setAttribute('type', 'button');
@@ -197,7 +216,7 @@ var EmojiPanel = {
         });
         
         this.loadEmojis(function() {
-            self.loadFrequent(function(items) {
+            self.loadStorage(function() {
                 var forms = document.querySelectorAll('.tweet-form');
                 if(forms.length > 0) {
                     [].forEach.call(forms, function(form) {
@@ -242,7 +261,9 @@ var EmojiPanel = {
                             btn.addEventListener('click', function() {
                                 if(dropdown.classList.toggle('open')) {
                                     btn.classList.add('enabled');
-                                    input.focus();
+                                    if(self.options.search.enabled) {
+                                        input.focus();
+                                    }
                                 } else {
                                     btn.classList.remove('enabled');
                                 }
@@ -256,64 +277,70 @@ var EmojiPanel = {
                             content.classList.add('Caret', 'Caret--stroked', 'Caret--top', 'EmojiPanel-content');
                             dropdownMenu.appendChild(content);
 
-                            var query = document.createElement('div');
-                            query.classList.add('EmojiPanel-query');
+                            if(self.options.search.enabled == true) {
+                                var query = document.createElement('div');
+                                query.classList.add('EmojiPanel-query');
 
-                            var input = document.createElement('input');
-                            input.classList.add('EmojiPanel-queryInput');
-                            input.setAttribute('type', 'text');
-                            input.setAttribute('autoComplete', 'off');
-                            input.setAttribute('placeholder', 'Search');
+                                var input = document.createElement('input');
+                                input.classList.add('EmojiPanel-queryInput');
+                                input.setAttribute('type', 'text');
+                                input.setAttribute('autoComplete', 'off');
+                                input.setAttribute('placeholder', 'Search');
 
-                            var icon = document.createElement('span');
-                            icon.classList.add('Icon', 'Icon--search');
+                                var icon = document.createElement('span');
+                                icon.classList.add('Icon', 'Icon--search');
 
-                            query.appendChild(input);
-                            query.appendChild(icon);
-                            content.appendChild(query);
+                                query.appendChild(input);
+                                query.appendChild(icon);
+                                content.appendChild(query);
+                            }
 
                             var results = document.createElement('div');
                             results.classList.add('EmojiPanel-results');
                             results.style.height = '160px';
 
-                            var frequentTitle = document.createElement('p');
-                            frequentTitle.classList.add('category-title');
-                            frequentTitle.innerHTML = 'Frequently used';
-                            if(self.frequent.length == 0) {
-                                frequentTitle.style.display = 'none';
+                            if(self.options.frequent.enabled == true) {
+                                var frequentTitle = document.createElement('p');
+                                frequentTitle.classList.add('category-title', 'EmojiPanel-frequentTitle');
+                                frequentTitle.innerHTML = 'Frequently used';
+                                if(self.options.frequent.list.length == 0) {
+                                    frequentTitle.style.display = 'none';
+                                }
+                                results.appendChild(frequentTitle);
+
+                                var frequentResults = document.createElement('div');
+                                frequentResults.classList.add('EmojiPanel-frequent');
+
+                                var top = _.filter(self.options.frequent.list, function(e) {
+                                    return e.count > 9;
+                                });
+                                top = _.first(self.options.frequent.list, 9);
+                                _.each(top, function(emoji) {
+                                    var button = document.createElement('button');
+                                    button.setAttribute('type', 'button');
+                                    button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + emoji.hex + '"></use></svg>';
+                                    button.classList.add('emoji');
+                                    button.dataset.hex = emoji.hex;
+                                    button.dataset.char = emoji.char;
+                                    button.dataset.category = emoji.category;
+
+                                    frequentResults.appendChild(button);
+                                });
+                                results.appendChild(frequentResults);
                             }
-                            results.appendChild(frequentTitle);
 
-                            var frequentResults = document.createElement('div');
-                            frequentResults.classList.add('EmojiPanel-frequent');
+                            if(self.options.search.enabled == true) {
+                                var searchTitle = document.createElement('p');
+                                searchTitle.classList.add('category-title');
+                                searchTitle.style.display = 'none';
+                                searchTitle.innerHTML = 'Search results';
+                                results.appendChild(searchTitle);
 
-                            var top = _.filter(self.frequent, function(e) {
-                                return e.count > 9;
-                            });
-                            top = _.first(self.frequent, 9);
-                            _.each(top, function(emoji) {
-                                var button = document.createElement('button');
-                                button.setAttribute('type', 'button');
-                                button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + emoji.hex + '"></use></svg>';
-                                button.classList.add('emoji');
-                                button.dataset.hex = emoji.hex;
-                                button.dataset.char = emoji.char;
-                                button.dataset.category = emoji.category;
-
-                                frequentResults.appendChild(button);
-                            });
-                            results.appendChild(frequentResults);
-
-                            var searchTitle = document.createElement('p');
-                            searchTitle.classList.add('category-title');
-                            searchTitle.style.display = 'none';
-                            searchTitle.innerHTML = 'Search results';
-                            results.appendChild(searchTitle);
-
-                            var emptyState = document.createElement('span');
-                            emptyState.classList.add('EmojiPanel-noResults');
-                            emptyState.innerHTML = 'No results.';
-                            results.appendChild(emptyState);
+                                var emptyState = document.createElement('span');
+                                emptyState.classList.add('EmojiPanel-noResults');
+                                emptyState.innerHTML = 'No results.';
+                                results.appendChild(emptyState);
+                            }
 
                             var order = ['people', 'animals_and_nature', 'food_and_drink', 'objects', 'activity', 'travel_and_places', 'symbols', 'flags'];
                             _.each(order, function(categoryName) {
@@ -355,56 +382,58 @@ var EmojiPanel = {
                             extraItem.appendChild(dropdown);
                             extras.appendChild(extraItem);
 
-                            input.addEventListener('input', function(e) {
-                                var matched = [];
-                                var emojis = results.querySelectorAll('.emoji');
-                                var titles = results.querySelectorAll('.category-title');
+                            if(self.options.search.enabled == true) {
+                                input.addEventListener('input', function(e) {
+                                    var matched = [];
+                                    var emojis = results.querySelectorAll('.emoji');
+                                    var titles = results.querySelectorAll('.category-title');
 
-                                var value = e.target.value;
-                                value = value.replace(/-/g, '').toLowerCase();
-                                if(value.length > 0) {
-                                    _.each(self.json, function(category) {
-                                        _.each(category.emojis, function(emoji) {
-                                            var matched = _.find(emoji.keywords, function(keyword) {
-                                                keyword = keyword.replace(/-/g, '').toLowerCase();
+                                    var value = e.target.value;
+                                    value = value.replace(/-/g, '').toLowerCase();
+                                    if(value.length > 0) {
+                                        _.each(self.json, function(category) {
+                                            _.each(category.emojis, function(emoji) {
+                                                var matched = _.find(emoji.keywords, function(keyword) {
+                                                    keyword = keyword.replace(/-/g, '').toLowerCase();
 
-                                                return keyword.indexOf(value) > -1;
+                                                    return keyword.indexOf(value) > -1;
+                                                });
+                                                
+                                                if(matched) {
+                                                    matched.push(emoji.hex);
+                                                }
                                             });
-                                            
-                                            if(matched) {
-                                                matched.push(emoji.hex);
+                                        });
+
+                                        if(matched.length == 0) {
+                                            emptyState.style.display = 'block';
+
+                                        } else {
+                                            emptyState.style.display = 'none';
+                                        }
+
+                                        [].forEach.call(emojis, function(emoji) {
+                                            if(matched.indexOf(emoji.dataset.hex) == -1) {
+                                                emoji.style.display = 'none';
+                                            } else {
+                                                emoji.style.display = 'inline-block';
                                             }
                                         });
-                                    });
-
-                                    if(matched.length == 0) {
-                                        emptyState.style.display = 'block';
-
+                                        [].forEach.call(titles, function(title) {
+                                            title.style.display = 'none';
+                                        });
+                                        searchTitle.style.display = 'block';
                                     } else {
-                                        emptyState.style.display = 'none';
-                                    }
-
-                                    [].forEach.call(emojis, function(emoji) {
-                                        if(matched.indexOf(emoji.dataset.hex) == -1) {
-                                            emoji.style.display = 'none';
-                                        } else {
+                                        [].forEach.call(emojis, function(emoji) {
                                             emoji.style.display = 'inline-block';
-                                        }
-                                    });
-                                    [].forEach.call(titles, function(title) {
-                                        title.style.display = 'none';
-                                    });
-                                    searchTitle.style.display = 'block';
-                                } else {
-                                    [].forEach.call(emojis, function(emoji) {
-                                        emoji.style.display = 'inline-block';
-                                    });
-                                    [].forEach.call(titles, function(title) {
-                                        title.style.display = 'block';
-                                    });
-                                    searchTitle.style.display = 'none';
-                                }
-                            });
+                                        });
+                                        [].forEach.call(titles, function(title) {
+                                            title.style.display = 'block';
+                                        });
+                                        searchTitle.style.display = 'none';
+                                    }
+                                });
+                            }
                         }
                     });
                 }
