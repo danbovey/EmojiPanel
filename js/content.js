@@ -227,7 +227,7 @@ var EmojiPanel = {
     },
     checkForms: function() {
         var self = this;
-        
+
         var forms = document.querySelectorAll('.tweet-form');
         [].forEach.call(forms, function(form) {
             if(!form.classList.contains('EmojiPanel')) {
@@ -268,7 +268,7 @@ var EmojiPanel = {
 
             var icon = document.createElement('span');
             icon.classList.add('Icon', 'Icon--smiley');
-            icon.style.color = window.getComputedStyle(document.querySelector('.TweetBoxExtras-item .Icon')).color;
+            icon.style.color = window.getComputedStyle(tweetBox.querySelector('.TweetBoxExtras-item .Icon')).color;
             btn.appendChild(icon);
 
             var tooltip = document.createElement('span');
