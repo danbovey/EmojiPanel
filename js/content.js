@@ -163,44 +163,25 @@ var EmojiPanel = {
     init: function() {
         var self = this;
 
-        // Listen for the click of an emoji button
         document.body.addEventListener('click', function(e) {
-            var found = false;
-
+            // Click any .emoji button
             // The target could be svg or use element, or the button itself
-            var el = e.target;
+            var el = e.target || e.srcElement;
             while(el && el.parentNode) {
                 if(el.classList.contains('emoji')) {
-                    found = true;
+                    var emoji = {
+                        char: el.dataset.char,
+                        hex: el.dataset.hex,
+                        category: el.dataset.category
+                    };
+
+                    self.writeEmoji(emoji, el.parentNode);
                     break;
                 }
                 el = el.parentNode;
             }
 
-            if(found == true) {
-                var emoji = {
-                    char: el.dataset.char,
-                    hex: el.dataset.hex,
-                    category: el.dataset.category
-                };
-
-                self.writeEmoji(emoji, el.parentNode);
-            }
-        });
-
-        // On pressing escape, always close any active dropdowns
-        document.body.addEventListener('keyup', function(e) {
-            if(e.keyCode == 27) {
-                var dropdowns = document.querySelectorAll('.EmojiPanel-dropdown');
-                [].forEach.call(dropdowns, function(dropdown) {
-                    dropdown.classList.remove('open');
-                    dropdown.querySelector('.btn').classList.remove('enabled');
-                });
-            }
-        });
-
-        // On click, close any dropdowns in condensed forms
-        document.addEventListener('click', function() {
+            // On click, close any dropdowns in condensed forms
             window.setTimeout(function() {
                 var forms = document.querySelectorAll('.tweet-form');
                 [].forEach.call(forms, function(form) {
@@ -214,239 +195,27 @@ var EmojiPanel = {
                 });
             }, 50);
         });
+
+        // On pressing escape, always close any active dropdowns
+        document.body.addEventListener('keyup', function(e) {
+            if(e.keyCode == 27) {
+                var dropdowns = document.querySelectorAll('.EmojiPanel-dropdown');
+                [].forEach.call(dropdowns, function(dropdown) {
+                    dropdown.classList.remove('open');
+                    dropdown.querySelector('.btn').classList.remove('enabled');
+                });
+            }
+        });
         
+        // Create new panels in every initial tweet form
         this.loadEmojis(function() {
             self.loadStorage(function() {
-                var forms = document.querySelectorAll('.tweet-form');
-                if(forms.length > 0) {
-                    [].forEach.call(forms, function(form) {
-                        form.classList.add('EmojiPanel');
+                self.checkForms();
 
-                        var tweetBox = form.querySelector('.tweet-box');
-                        var handleChange = function(e) {
-                            tweetBox.dataset.offset = self.getCaretPosition(tweetBox);
-                        };
-                        tweetBox.addEventListener('keyup', handleChange);
-                        tweetBox.addEventListener('change', handleChange);
-                        tweetBox.addEventListener('click', handleChange);
-
-                        var extras = form.querySelector('.tweet-box-extras');
-                        if(extras) {
-                            var extraItem = document.createElement('div');
-                            extraItem.classList.add('TweetBoxExtras-item');
-
-                            var dropdown = document.createElement('div');
-                            dropdown.classList.add('dropdown', 'EmojiPanel-dropdown');
-
-                            extraItem.appendChild(dropdown);
-
-                            var btn = document.createElement('button');
-                            btn.setAttribute('type', 'button');
-                            btn.classList.add('btn', 'icon-btn', 'js-tooltip');
-                            btn.dataset.delay = 150;
-                            btn.dataset.originalTitle = 'Add emoji';
-                            btn.style.opacity = 1;
-                            btn.setAttribute('aria-haspopup', false);
-
-                            var icon = document.createElement('span');
-                            icon.classList.add('Icon', 'Icon--smiley');
-                            icon.style.color = window.getComputedStyle(document.querySelector('.TweetBoxExtras-item .Icon')).color;
-                            btn.appendChild(icon);
-
-                            var tooltip = document.createElement('span');
-                            tooltip.classList.add('text', 'u-hiddenVisually');
-                            tooltip.innerHTML = 'Add emoji';
-                            btn.appendChild(tooltip);
-
-                            btn.addEventListener('click', function() {
-                                if(dropdown.classList.toggle('open')) {
-                                    btn.classList.add('enabled');
-                                    if(self.options.search.enabled) {
-                                        input.focus();
-                                    }
-                                } else {
-                                    btn.classList.remove('enabled');
-                                }
-                            });
-
-                            var dropdownMenu = document.createElement('div');
-                            dropdownMenu.classList.add('dropdown-menu', 'EmojiPanel-dropdownMenu');
-                            dropdownMenu.tabIndex = -1;
-
-                            var content = document.createElement('div');
-                            content.classList.add('Caret', 'Caret--stroked', 'Caret--top', 'EmojiPanel-content');
-                            dropdownMenu.appendChild(content);
-
-                            if(self.options.search.enabled == true) {
-                                var query = document.createElement('div');
-                                query.classList.add('EmojiPanel-query');
-
-                                var input = document.createElement('input');
-                                input.classList.add('EmojiPanel-queryInput');
-                                input.setAttribute('type', 'text');
-                                input.setAttribute('autoComplete', 'off');
-                                input.setAttribute('placeholder', 'Search');
-
-                                var icon = document.createElement('span');
-                                icon.classList.add('Icon', 'Icon--search');
-
-                                query.appendChild(input);
-                                query.appendChild(icon);
-                                content.appendChild(query);
-                            }
-
-                            var results = document.createElement('div');
-                            results.classList.add('EmojiPanel-results');
-                            results.style.height = '160px';
-
-                            if(self.options.frequent.enabled == true) {
-                                var frequentResults = document.createElement('div');
-                                frequentResults.classList.add('EmojiPanel-frequent');
-
-                                var frequentTitle = document.createElement('p');
-                                frequentTitle.classList.add('category-title', 'EmojiPanel-frequentTitle');
-                                frequentTitle.innerHTML = 'Frequently used';
-                                if(self.options.frequent.list.length == 0) {
-                                    frequentTitle.style.display = 'none';
-                                }
-                                frequentResults.appendChild(frequentTitle);
-
-                                var top = _.filter(self.options.frequent.list, function(e) {
-                                    return e.count > 9;
-                                });
-                                top = _.first(self.options.frequent.list, 9);
-                                _.each(top, function(emoji) {
-                                    var button = document.createElement('button');
-                                    button.setAttribute('type', 'button');
-                                    button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + emoji.hex + '"></use></svg>';
-                                    button.classList.add('emoji');
-                                    button.dataset.hex = emoji.hex;
-                                    button.dataset.char = emoji.char;
-                                    button.dataset.category = emoji.category;
-
-                                    frequentResults.appendChild(button);
-                                });
-                                results.appendChild(frequentResults);
-                            }
-
-                            if(self.options.search.enabled == true) {
-                                var searchTitle = document.createElement('p');
-                                searchTitle.classList.add('category-title');
-                                searchTitle.style.display = 'none';
-                                searchTitle.innerHTML = 'Search results';
-                                results.appendChild(searchTitle);
-
-                                var emptyState = document.createElement('span');
-                                emptyState.classList.add('EmojiPanel-noResults');
-                                emptyState.innerHTML = 'No results.';
-                                results.appendChild(emptyState);
-                            }
-
-                            var order = ['people', 'animals_and_nature', 'food_and_drink', 'objects', 'activity', 'travel_and_places', 'symbols', 'flags'];
-                            _.each(order, function(categoryName) {
-                                var category = _.find(self.json, function(category) {
-                                    return category.name == categoryName;
-                                });
-
-                                if(category) {
-                                    var title = document.createElement('p');
-                                    title.classList.add('category-title');
-                                    var categoryName = category.name.replace(/_/g, ' ');
-                                    categoryName = categoryName.replace(/\w\S*/g, function(name) {
-                                        return name.charAt(0).toUpperCase() + name.substr(1).toLowerCase();
-                                    });
-                                    categoryName = categoryName.replace('And', '&amp;');
-                                    title.innerHTML = categoryName;
-                                    results.appendChild(title);
-
-                                    var emojis = category.emojis;
-
-                                    _.each(emojis, function(emoji) {
-                                        var button = document.createElement('button');
-                                        button.setAttribute('type', 'button');
-                                        button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + emoji.hex + '"></use></svg>';
-                                        button.classList.add('emoji');
-                                        button.dataset.char = emoji.char;
-                                        button.dataset.hex = emoji.hex;
-                                        button.dataset.category = emoji.category;
-
-                                        results.appendChild(button);
-                                    });
-                                }
-                            });
-
-                            content.appendChild(results);
-                            dropdownMenu.appendChild(content);
-                            dropdown.appendChild(btn);
-                            dropdown.appendChild(dropdownMenu);
-                            extraItem.appendChild(dropdown);
-                            extras.appendChild(extraItem);
-
-                            if(self.options.search.enabled == true) {
-                                input.addEventListener('input', function(e) {
-                                    var matched = [];
-                                    var emojis = results.querySelectorAll('.emoji');
-                                    var titles = results.querySelectorAll('.category-title');
-                                    var noResults = results.querySelector('.EmojiPanel-noResults');
-
-                                    var value = e.target.value;
-                                    value = value.replace(/-/g, '').toLowerCase();
-                                    if(value.length > 0) {
-                                        _.each(self.json, function(category) {
-                                            _.each(category.emojis, function(emoji) {
-                                                var keywordMatch = _.find(emoji.keywords, function(keyword) {
-                                                    keyword = keyword.replace(/-/g, '').toLowerCase();
-
-                                                    return keyword.indexOf(value) > -1;
-                                                });
-                                                
-                                                if(keywordMatch) {
-                                                    matched.push(emoji.hex);
-                                                }
-                                            });
-                                        });
-
-                                        if(matched.length == 0) {
-                                            emptyState.style.display = 'block';
-
-                                        } else {
-                                            emptyState.style.display = 'none';
-                                        }
-
-                                        [].forEach.call(emojis, function(emoji) {
-                                            if(matched.indexOf(emoji.dataset.hex) == -1) {
-                                                emoji.style.display = 'none';
-                                            } else {
-                                                emoji.style.display = 'inline-block';
-                                            }
-                                        });
-                                        [].forEach.call(titles, function(title) {
-                                            title.style.display = 'none';
-                                        });
-                                        searchTitle.style.display = 'block';
-
-                                        if(self.options.frequent.enabled == true) {
-                                            results.querySelector('.EmojiPanel-frequent').style.display = 'none';
-                                        }
-                                    } else {
-                                        [].forEach.call(emojis, function(emoji) {
-                                            emoji.style.display = 'inline-block';
-                                        });
-                                        [].forEach.call(titles, function(title) {
-                                            title.style.display = 'block';
-                                        });
-                                        searchTitle.style.display = 'none';
-                                        noResults.style.display = 'none';
-
-                                        if(self.options.frequent.enabled == true) {
-                                            results.querySelector('.EmojiPanel-frequent').style.display = 'block';
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
+                // Every second, check for any new tweet forms
+                window.setInterval(function() {
+                    self.checkForms()
+                }, 1000);
             });
         });
 
@@ -455,6 +224,245 @@ var EmojiPanel = {
         [].forEach.call(emojiBars, function(bar) {
             bar.parentNode.removeChild(bar);
         });
+    },
+    checkForms: function() {
+        var self = this;
+        
+        var forms = document.querySelectorAll('.tweet-form');
+        [].forEach.call(forms, function(form) {
+            if(!form.classList.contains('EmojiPanel')) {
+                self.createForm(form);
+            }
+        });
+    },
+    createForm: function(form) {
+        var self = this;
+
+        form.classList.add('EmojiPanel');
+
+        var tweetBox = form.querySelector('.tweet-box');
+        var handleChange = function(e) {
+            tweetBox.dataset.offset = self.getCaretPosition(tweetBox);
+        };
+        tweetBox.addEventListener('keyup', handleChange);
+        tweetBox.addEventListener('change', handleChange);
+        tweetBox.addEventListener('click', handleChange);
+
+        var extras = form.querySelector('.tweet-box-extras');
+        if(extras) {
+            var extraItem = document.createElement('div');
+            extraItem.classList.add('TweetBoxExtras-item');
+
+            var dropdown = document.createElement('div');
+            dropdown.classList.add('dropdown', 'EmojiPanel-dropdown');
+
+            extraItem.appendChild(dropdown);
+
+            var btn = document.createElement('button');
+            btn.setAttribute('type', 'button');
+            btn.classList.add('btn', 'icon-btn', 'js-tooltip');
+            btn.dataset.delay = 150;
+            btn.dataset.originalTitle = 'Add emoji';
+            btn.style.opacity = 1;
+            btn.setAttribute('aria-haspopup', false);
+
+            var icon = document.createElement('span');
+            icon.classList.add('Icon', 'Icon--smiley');
+            icon.style.color = window.getComputedStyle(document.querySelector('.TweetBoxExtras-item .Icon')).color;
+            btn.appendChild(icon);
+
+            var tooltip = document.createElement('span');
+            tooltip.classList.add('text', 'u-hiddenVisually');
+            tooltip.innerHTML = 'Add emoji';
+            btn.appendChild(tooltip);
+
+            btn.addEventListener('click', function() {
+                if(dropdown.classList.toggle('open')) {
+                    btn.classList.add('enabled');
+                    if(self.options.search.enabled) {
+                        input.focus();
+                    }
+                } else {
+                    btn.classList.remove('enabled');
+                }
+            });
+
+            var dropdownMenu = document.createElement('div');
+            dropdownMenu.classList.add('dropdown-menu', 'EmojiPanel-dropdownMenu');
+            dropdownMenu.tabIndex = -1;
+
+            var content = document.createElement('div');
+            content.classList.add('Caret', 'Caret--stroked', 'Caret--top', 'EmojiPanel-content');
+            dropdownMenu.appendChild(content);
+
+            if(self.options.search.enabled == true) {
+                var query = document.createElement('div');
+                query.classList.add('EmojiPanel-query');
+
+                var input = document.createElement('input');
+                input.classList.add('EmojiPanel-queryInput');
+                input.setAttribute('type', 'text');
+                input.setAttribute('autoComplete', 'off');
+                input.setAttribute('placeholder', 'Search');
+
+                var icon = document.createElement('span');
+                icon.classList.add('Icon', 'Icon--search');
+
+                query.appendChild(input);
+                query.appendChild(icon);
+                content.appendChild(query);
+            }
+
+            var results = document.createElement('div');
+            results.classList.add('EmojiPanel-results');
+            results.style.height = '160px';
+
+            if(self.options.frequent.enabled == true) {
+                var frequentResults = document.createElement('div');
+                frequentResults.classList.add('EmojiPanel-frequent');
+
+                var frequentTitle = document.createElement('p');
+                frequentTitle.classList.add('category-title', 'EmojiPanel-frequentTitle');
+                frequentTitle.innerHTML = 'Frequently used';
+                if(self.options.frequent.list.length == 0) {
+                    frequentTitle.style.display = 'none';
+                }
+                frequentResults.appendChild(frequentTitle);
+
+                var top = _.filter(self.options.frequent.list, function(e) {
+                    return e.count > 9;
+                });
+                top = _.first(self.options.frequent.list, 9);
+                _.each(top, function(emoji) {
+                    var button = document.createElement('button');
+                    button.setAttribute('type', 'button');
+                    button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + emoji.hex + '"></use></svg>';
+                    button.classList.add('emoji');
+                    button.dataset.hex = emoji.hex;
+                    button.dataset.char = emoji.char;
+                    button.dataset.category = emoji.category;
+
+                    frequentResults.appendChild(button);
+                });
+                results.appendChild(frequentResults);
+            }
+
+            if(self.options.search.enabled == true) {
+                var searchTitle = document.createElement('p');
+                searchTitle.classList.add('category-title');
+                searchTitle.style.display = 'none';
+                searchTitle.innerHTML = 'Search results';
+                results.appendChild(searchTitle);
+
+                var emptyState = document.createElement('span');
+                emptyState.classList.add('EmojiPanel-noResults');
+                emptyState.innerHTML = 'No results.';
+                results.appendChild(emptyState);
+            }
+
+            var order = ['people', 'animals_and_nature', 'food_and_drink', 'objects', 'activity', 'travel_and_places', 'symbols', 'flags'];
+            _.each(order, function(categoryName) {
+                var category = _.find(self.json, function(category) {
+                    return category.name == categoryName;
+                });
+
+                if(category) {
+                    var title = document.createElement('p');
+                    title.classList.add('category-title');
+                    var categoryName = category.name.replace(/_/g, ' ');
+                    categoryName = categoryName.replace(/\w\S*/g, function(name) {
+                        return name.charAt(0).toUpperCase() + name.substr(1).toLowerCase();
+                    });
+                    categoryName = categoryName.replace('And', '&amp;');
+                    title.innerHTML = categoryName;
+                    results.appendChild(title);
+
+                    var emojis = category.emojis;
+
+                    _.each(emojis, function(emoji) {
+                        var button = document.createElement('button');
+                        button.setAttribute('type', 'button');
+                        button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + emoji.hex + '"></use></svg>';
+                        button.classList.add('emoji');
+                        button.dataset.char = emoji.char;
+                        button.dataset.hex = emoji.hex;
+                        button.dataset.category = emoji.category;
+
+                        results.appendChild(button);
+                    });
+                }
+            });
+
+            content.appendChild(results);
+            dropdownMenu.appendChild(content);
+            dropdown.appendChild(btn);
+            dropdown.appendChild(dropdownMenu);
+            extraItem.appendChild(dropdown);
+            extras.appendChild(extraItem);
+
+            if(self.options.search.enabled == true) {
+                input.addEventListener('input', function(e) {
+                    var matched = [];
+                    var emojis = results.querySelectorAll('.emoji');
+                    var titles = results.querySelectorAll('.category-title');
+                    var noResults = results.querySelector('.EmojiPanel-noResults');
+
+                    var value = e.target.value;
+                    value = value.replace(/-/g, '').toLowerCase();
+                    if(value.length > 0) {
+                        _.each(self.json, function(category) {
+                            _.each(category.emojis, function(emoji) {
+                                var keywordMatch = _.find(emoji.keywords, function(keyword) {
+                                    keyword = keyword.replace(/-/g, '').toLowerCase();
+
+                                    return keyword.indexOf(value) > -1;
+                                });
+                                
+                                if(keywordMatch) {
+                                    matched.push(emoji.hex);
+                                }
+                            });
+                        });
+
+                        if(matched.length == 0) {
+                            emptyState.style.display = 'block';
+
+                        } else {
+                            emptyState.style.display = 'none';
+                        }
+
+                        [].forEach.call(emojis, function(emoji) {
+                            if(matched.indexOf(emoji.dataset.hex) == -1) {
+                                emoji.style.display = 'none';
+                            } else {
+                                emoji.style.display = 'inline-block';
+                            }
+                        });
+                        [].forEach.call(titles, function(title) {
+                            title.style.display = 'none';
+                        });
+                        searchTitle.style.display = 'block';
+
+                        if(self.options.frequent.enabled == true) {
+                            results.querySelector('.EmojiPanel-frequent').style.display = 'none';
+                        }
+                    } else {
+                        [].forEach.call(emojis, function(emoji) {
+                            emoji.style.display = 'inline-block';
+                        });
+                        [].forEach.call(titles, function(title) {
+                            title.style.display = 'block';
+                        });
+                        searchTitle.style.display = 'none';
+                        noResults.style.display = 'none';
+
+                        if(self.options.frequent.enabled == true) {
+                            results.querySelector('.EmojiPanel-frequent').style.display = 'block';
+                        }
+                    }
+                });
+            }
+        }
     }
 };
 
