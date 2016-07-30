@@ -268,7 +268,13 @@ var EmojiPanel = {
 
             var icon = document.createElement('span');
             icon.classList.add('Icon', 'Icon--smiley');
-            icon.style.color = window.getComputedStyle(tweetBox.querySelector('.TweetBoxExtras-item .Icon')).color;
+
+            var color = '#2F9AC2';
+            var otherIcon = form.querySelector('.TweetBoxExtras-item .Icon');
+            if(otherIcon) {
+                color = window.getComputedStyle(otherIcon).color
+            }
+            icon.style.color = color;
             btn.appendChild(icon);
 
             var tooltip = document.createElement('span');
