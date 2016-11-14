@@ -18,7 +18,7 @@ An open-source Chrome Extension that adds a dropdown panel with all emojis to th
 
 ## A note on maintainability
 
-The reason I made this package, despite there being quite a few alternatives on the Web Store is - apart from most being full of ads :thumbsdown: - none are open-source and maintainable. If [Twemoji](https://github.com/twitter/twemoji) updates with new Unicode emoji entries, you can rely on this extension to include all the emojis your :heart: desires! We can simply run `npm run build` and it creates a new list using [emojilib](https://github.com/muan/emojilib). :fire:
+The reason I made this package, despite there being quite a few alternatives on the Web Store is - apart from most being full of ads :thumbsdown: - none are open-source and maintainable. If [Twemoji](https://github.com/twitter/twemoji) updates with new Unicode emoji entries, you can rely on this extension to include all the emojis your :heart: desires! We can simply run `npm run build` and it creates a new list using [EmojiOne](https://github.com/Ranks/emojione)'s json. :fire:
 
 ## License
 
