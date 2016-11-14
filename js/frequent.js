@@ -1,5 +1,6 @@
 const _ = require('underscore');
 
+const Emojis = require('./emojis');
 const Storage = require('./storage');
 
 const Frequent = {
@@ -51,15 +52,7 @@ const Frequent = {
 
                 // Add the new sorted frequently used list
                 _.each(frequentList, (emoji) => {
-                    const button = document.createElement('button');
-                    button.setAttribute('type', 'button');
-                    button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + (emoji.unicode || emoji.hex) + '"></use></svg>';
-                    button.classList.add('emoji');
-                    button.dataset.unicode = (emoji.unicode || emoji.hex);
-                    button.dataset.char = emoji.char;
-                    button.dataset.category = emoji.category;
-
-                    frequentResults.appendChild(button);
+                    frequentResults.appendChild(Emojis.createButton(emoji));
                 });
             });
         }

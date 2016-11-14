@@ -7,7 +7,8 @@ let options = {
     frequent: {
         enabled: true,
         list: []
-    }
+    },
+    fitzpatrick: 'a'
 };
 let json = {};
 

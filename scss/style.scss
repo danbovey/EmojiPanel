@@ -28,7 +28,7 @@
         background-image: linear-gradient(#FFF, #F5F8FA);
         
         .EmojiPanel-queryInput[type="text"] {
-            width: 100%;
+            width: calc(100% - 35px);
             padding: 4px 4px 4px 24px;
             transition: none;
             box-sizing: border-box;
@@ -38,6 +38,35 @@
             top: 13px;
             left: 16px;
             color: #66757F;
+        }
+        .EmojiPanel-btnModifierToggle {
+            float: right;
+        }
+        .EmojiPanel-btnModifier {
+            width: 30px;
+            height: 30px;
+            padding: 5px;
+            border-radius: 3px;
+            outline: none;
+            transition: all 0.2s;
+
+            &:hover, &:focus {
+                background: #F1F1F1;
+            }
+        }
+        .EmojiPanel-modifierDropdown {
+            display: none;
+            position: absolute;
+            top: 8px;
+            right: 38px;
+            padding-left: 8px;
+            background-color: #F5F8FA;
+            background-repeat: repeat-x;
+            background-image: linear-gradient(#FFF, #F5F8FA);
+
+            &.active {
+                display: block;
+            }
         }
     }
     

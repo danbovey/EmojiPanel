@@ -1,7 +1,9 @@
+const _ = require('underscore');
+
 const Storage = require('./storage');
 const Frequent = require('./frequent');
 
-module.exports = {
+const Emojis = {
     load: () => {
         // Load and inject the SVG sprite into the DOM
         const svgXhr = new XMLHttpRequest();
@@ -26,6 +28,67 @@ module.exports = {
             };
             emojiXhr.send();
         });
+    },
+    createSVG: (emoji) => {
+        return '<svg viewBox="0 0 20 20"><use xlink:href="#' + (emoji.unicode || emoji.hex) + '"></use></svg>';
+        // const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        // svg.setAttribute('viewBox', '0 0 20 20');
+
+        // const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        // use.setAttribute('xlink:href', '#' + (emoji.unicode || emoji.hex));
+
+        // svg.appendChild(use);
+
+        // return svg;
+    },
+    createButton: (emoji, skipScale = false) => {
+        const options = Storage.get();
+
+        const modifiers = {
+            a: {
+                unicode: '',
+                char: ''
+            },
+            b: {
+                unicode: '-1f3fb',
+                char: '🏻'
+            },
+            c: {
+                unicode: '-1f3fc',
+                char: '🏼'
+            },
+            d: {
+                unicode: '-1f3fd',
+                char: '🏽'
+            },
+            e: {
+                unicode: '-1f3fe',
+                char: '🏾'
+            },
+            f: {
+                unicode: '-1f3ff',
+                char: '🏿'
+            }
+        };
+        let unicode = (emoji.unicode || emoji.hex);
+        let char = emoji.char;
+        if(emoji.fitzpatrick && skipScale == false) {
+            unicode += modifiers[options.fitzpatrick].unicode;
+            char += modifiers[options.fitzpatrick].char;
+        }
+
+        const button = document.createElement('button');
+        button.setAttribute('type', 'button');
+        button.innerHTML = Emojis.createSVG({ unicode });
+        button.classList.add('emoji');
+        button.dataset.unicode = unicode;
+        button.dataset.char = char;
+        button.dataset.category = emoji.category;
+        if(emoji.fitzpatrick) {
+            button.dataset.fitzpatrick = emoji.fitzpatrick;
+        }
+
+        return button;
     },
     write: (emoji, el) => {
         const options = Storage.get();
@@ -54,3 +117,5 @@ module.exports = {
         }
     }
 };
+
+module.exports = Emojis;

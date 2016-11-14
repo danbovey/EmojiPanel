@@ -1,5 +1,6 @@
 const _ = require('underscore');
 
+const Emojis = require('./emojis');
 const Frequent = require('./frequent');
 const Storage = require('./storage');
 
@@ -89,12 +90,73 @@ const forms = {
                 input.setAttribute('type', 'text');
                 input.setAttribute('autoComplete', 'off');
                 input.setAttribute('placeholder', 'Search');
+                query.appendChild(input);
 
                 const icon = document.createElement('span');
                 icon.classList.add('Icon', 'Icon--search');
-
-                query.appendChild(input);
                 query.appendChild(icon);
+
+                const modifiers = {
+                    a: '',
+                    b: '-1f3fb',
+                    c: '-1f3fc',
+                    d: '-1f3fd',
+                    e: '-1f3fe',
+                    f: '-1f3ff'
+                };
+                const hand = '270b' + modifiers[options.fitzpatrick]; // ✋
+
+                const modifierToggle = document.createElement('button');
+                modifierToggle.setAttribute('type', 'button');
+                modifierToggle.classList.add('EmojiPanel-btnModifier', 'EmojiPanel-btnModifierToggle');
+                modifierToggle.innerHTML = Emojis.createSVG({unicode: hand});
+                query.appendChild(modifierToggle);
+
+                const modifierDropdown = document.createElement('div');
+                modifierDropdown.classList.add('EmojiPanel-modifierDropdown');
+
+                for(var m in modifiers) {
+                    const modifier = modifiers[m];
+                    const unicode = '270b' + modifier;
+                    const modifierBtn = document.createElement('button');
+                    modifierBtn.setAttribute('type', 'button');
+                    modifierBtn.classList.add('EmojiPanel-btnModifier');
+                    modifierBtn.dataset.modifier = m;
+                    modifierBtn.innerHTML = Emojis.createSVG({ unicode });
+
+                    modifierBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        const toggles = [].forEach.call(document.querySelectorAll('.EmojiPanel-btnModifierToggle'), (toggle) => {
+                            toggle.innerHTML = Emojis.createSVG({ unicode });
+                        });
+
+                        const options = Storage.get();
+                        options.fitzpatrick = this.dataset.modifier;
+                        modifierDropdown.classList.remove('active');
+                        Storage.save(options);
+
+                        // Refresh every list with new scale
+                        const emojis = [].forEach.call(document.querySelectorAll('.EmojiPanel .emoji'), (emoji) => {
+                            if(emoji.dataset.fitzpatrick) {
+                                let uni = emoji.dataset.unicode;
+                                for(var i in modifiers) {
+                                    uni = uni.replace(modifiers[i], '');
+                                }
+                                emoji.innerHTML = Emojis.createSVG({ unicode: uni + modifier });
+                            }
+                        });
+                    });
+
+                    modifierDropdown.appendChild(modifierBtn);
+                }
+                query.appendChild(modifierDropdown);
+
+                modifierToggle.addEventListener('click', function() {
+                    modifierDropdown.classList.toggle('active');
+                });
+
                 content.appendChild(query);
             }
 
@@ -116,15 +178,7 @@ const forms = {
                 frequentResults.classList.add('EmojiPanel-frequent');
 
                 _.each(frequentList, (emoji) => {
-                    const button = document.createElement('button');
-                    button.setAttribute('type', 'button');
-                    button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + (emoji.unicode || emoji.hex) + '"></use></svg>';
-                    button.classList.add('emoji');
-                    button.dataset.unicode = (emoji.unicode || emoji.hex);
-                    button.dataset.char = emoji.char;
-                    button.dataset.category = emoji.category;
-
-                    frequentResults.appendChild(button);
+                    frequentResults.appendChild(Emojis.createButton(emoji));
                 });
                 results.appendChild(frequentResults);
             }
@@ -144,37 +198,20 @@ const forms = {
                 results.appendChild(emptyState);
             }
 
-            // const order = ['people', 'animals_and_nature', 'food_and_drink', 'objects', 'activity', 'travel_and_places', 'symbols', 'flags'];
             _.each(json, (category) => {
-                // const category = _.find(json, (category) => {
-                //     return category.name == categoryName;
-                // });
+                const title = document.createElement('p');
+                title.classList.add('category-title');
 
-                // if(category) {
-                    const title = document.createElement('p');
-                    title.classList.add('category-title');
-                    let categoryName = category.name.replace(/_/g, ' ');
-                    categoryName = categoryName.replace(/\w\S*/g, (name) => {
-                        return name.charAt(0).toUpperCase() + name.substr(1).toLowerCase();
-                    });
-                    categoryName = categoryName.replace('And', '&amp;');
-                    title.innerHTML = categoryName;
-                    results.appendChild(title);
+                let categoryName = category.name.replace(/_/g, ' ')
+                    .replace(/\w\S*/g, (name) => name.charAt(0).toUpperCase() + name.substr(1).toLowerCase())
+                    .replace('And', '&amp;');
 
-                    const emojis = category.emojis;
+                title.innerHTML = categoryName;
+                results.appendChild(title);
 
-                    _.each(emojis, (emoji) => {
-                        const button = document.createElement('button');
-                        button.setAttribute('type', 'button');
-                        button.innerHTML = '<svg viewBox="0 0 20 20"><use xlink:href="#' + emoji.unicode + '"></use></svg>';
-                        button.classList.add('emoji');
-                        button.dataset.char = emoji.char;
-                        button.dataset.unicode = emoji.unicode;
-                        button.dataset.category = emoji.category;
-
-                        results.appendChild(button);
-                    });
-                // }
+                _.each(category.emojis, (emoji) => {
+                    results.appendChild(Emojis.createButton(emoji));
+                });
             });
 
             content.appendChild(results);

@@ -1,7 +1,5 @@
 const _ = require('underscore');
 
-chrome.storage.sync.clear();
-
 const Emojis = require('./emojis');
 const Forms = require('./forms');
 const Frequent = require('./frequent');
