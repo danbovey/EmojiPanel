@@ -41,7 +41,7 @@ const Emojis = {
 
         // return svg;
     },
-    createButton: (emoji, skipScale = false) => {
+    createButton: (emoji) => {
         const options = Storage.get();
 
         const modifiers = {
@@ -72,7 +72,7 @@ const Emojis = {
         };
         let unicode = (emoji.unicode || emoji.hex);
         let char = emoji.char;
-        if(emoji.fitzpatrick && skipScale == false) {
+        if(emoji.fitzpatrick) {
             unicode += modifiers[options.fitzpatrick].unicode;
             char += modifiers[options.fitzpatrick].char;
         }
@@ -112,7 +112,7 @@ const Emojis = {
             input.textContent = input.textContent.substring(0, offset) + emoji.char + input.textContent.substring(offset, input.textContent.length);
 
             if(options.frequent.enabled == true) {
-                Frequent.add(emoji, options);
+                Frequent.add(emoji, Emojis.createButton);
             }
         }
     }

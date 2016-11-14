@@ -1,6 +1,5 @@
 const _ = require('underscore');
 
-const Emojis = require('./emojis');
 const Storage = require('./storage');
 
 const Frequent = {
@@ -16,7 +15,7 @@ const Frequent = {
             .sortBy('count')
             ._wrapped.reverse();
     },
-    add: (emoji) => {
+    add: (emoji, createButtonFn) => {
         const options = Storage.get();
         let exists = false;
         options.frequent.list = _.map(options.frequent.list, (e) => {
@@ -33,9 +32,10 @@ const Frequent = {
             options.frequent.list.push(emoji);
         }
 
-        Frequent.sort(options); // Saves as well
+        Frequent.sort(options, createButtonFn); // Saves as well
     },
-    sort: (options) => {
+    // Requires the function to create a button because it fails to find Emojis.createButton directly :(
+    sort: (options, createButtonFn) => {
         const frequentList = Frequent.get();
         if(frequentList.length > 0) {
             const frequentTitles = document.querySelectorAll('.EmojiPanel-frequentTitle');
@@ -52,7 +52,7 @@ const Frequent = {
 
                 // Add the new sorted frequently used list
                 _.each(frequentList, (emoji) => {
-                    frequentResults.appendChild(Emojis.createButton(emoji));
+                    frequentResults.appendChild(createButtonFn(emoji));
                 });
             });
         }
