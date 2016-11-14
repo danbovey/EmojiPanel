@@ -5,6 +5,7 @@ var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 
 var browserify = require('browserify');
+var babelify = require('babelify');
 var uglify = require('gulp-uglify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -25,13 +26,12 @@ gulp.task('js', function() {
     ];
 
     var tasks = files.map(function(entry) {
-        if(entry.indexOf('node_modules') > -1) {
-            return gulp.src(entry)
-                .pipe(gulp.dest('chrome/js'));
-        } else {
-            return browserify({
+        return browserify({
                 entries: [entry]
             })
+            .transform(babelify.configure({
+                presets: ["es2015"]
+            }))
             .bundle()
             .on('error', function (e) {
                 console.log(e);
@@ -44,8 +44,7 @@ gulp.task('js', function() {
             }))
             .pipe(sourcemaps.write())
             .pipe(gulp.dest('chrome'))
-            .pipe(notify("Compiled JS"));;
-        }
+            .pipe(notify("Compiled JS"));
     });
 
     return es.merge.apply(null, tasks);
