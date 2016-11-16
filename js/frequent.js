@@ -18,7 +18,8 @@ const Frequent = {
     add: (emoji, createButtonFn) => {
         const options = Storage.get();
         let exists = false;
-        options.frequent.list = _.map(options.frequent.list, (e) => {
+
+        const allFrequent = _.map(options.frequent.list, (e) => {
             if((e.unicode || e.hex) == emoji.unicode) {
                 e.count += 1;
                 exists = true;
@@ -29,13 +30,12 @@ const Frequent = {
 
         if(exists == false) {
             emoji.count = 1;
-            options.frequent.list.push(emoji);
+            allFrequent.push(emoji);
         }
 
-        Frequent.sort(options, createButtonFn); // Saves as well
-    },
-    // Requires the function to create a button because it fails to find Emojis.createButton directly :(
-    sort: (options, createButtonFn) => {
+        options.frequent.list = allFrequent;
+        Storage.save(options);
+
         const frequentList = Frequent.get();
         if(frequentList.length > 0) {
             const frequentTitles = document.querySelectorAll('.EmojiPanel-frequentTitle');
@@ -52,12 +52,14 @@ const Frequent = {
 
                 // Add the new sorted frequently used list
                 _.each(frequentList, (emoji) => {
+                    // Compatability with older storage schema
+                    if(typeof emoji.unicode == 'undefined') {
+                        emoji.unicode = emoji.hex
+                    }
                     frequentResults.appendChild(createButtonFn(emoji));
                 });
             });
         }
-
-        Storage.save(options);
     }
 };
 

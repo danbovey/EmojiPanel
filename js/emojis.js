@@ -84,6 +84,7 @@ const Emojis = {
         button.dataset.unicode = unicode;
         button.dataset.char = char;
         button.dataset.category = emoji.category;
+        button.dataset.name = emoji.name;
         if(emoji.fitzpatrick) {
             button.dataset.fitzpatrick = emoji.fitzpatrick;
         }
@@ -101,19 +102,41 @@ const Emojis = {
             }
         }
 
-        if(input && input.isContentEditable) {
-            // Insert the emoji at the end of the text by default
-            let offset = input.textContent.length;
-            if(input.dataset.offset) {
-                // Insert the emoji where the rich editor caret was
-                offset = input.dataset.offset;
-            }
+        // Insert the emoji at the end of the text by default
+        let offset = input.textContent.length;
+        if(input.dataset.offset) {
+            // Insert the emoji where the rich editor caret was
+            offset = input.dataset.offset;
+        }
 
-            input.textContent = input.textContent.substring(0, offset) + emoji.char + input.textContent.substring(offset, input.textContent.length);
+        // Insert the pictographImage
+        const pictographs = input.parentNode.querySelector('.RichEditor-pictographs');
+        const url = 'https://abs.twimg.com/emoji/v2/72x72/' + emoji.unicode + '.png';
+        const image = document.createElement('img');
+        image.classList.add('RichEditor-pictographImage');
+        image.setAttribute('src', url);
+        image.setAttribute('draggable', false);
+        pictographs.appendChild(image);
 
-            if(options.frequent.enabled == true) {
-                Frequent.add(emoji, Emojis.createButton);
-            }
+        const span = document.createElement('span');
+        span.classList.add('RichEditor-pictographText');
+        span.setAttribute('title', emoji.name);
+        span.setAttribute('aria-label', emoji.name);
+        span.dataset.pictographText = emoji.char;
+        span.dataset.pictographImage = url;
+        span.innerHTML = '&emsp;';
+
+        const div = input.querySelector('div');
+        if(div.innerHTML == '<br>') {
+            div.innerHTML = '';
+        }
+        div.appendChild(span);
+        input.focus();
+
+        input.dataset.offset = parseInt(input.dataset.offset, 10) + 1;
+
+        if(options.frequent.enabled == true) {
+            Frequent.add(emoji, Emojis.createButton);
         }
     }
 };

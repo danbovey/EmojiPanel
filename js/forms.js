@@ -160,6 +160,34 @@ const forms = {
                 content.appendChild(query);
             }
 
+            const notes = Storage.getNotifications();
+            if(notes.length > 0) {
+                const notifications = document.createElement('div');
+                notifications.classList.add('EmojiPanel-notifications');
+                for(var n in notes) {
+                    const note = notes[n];
+                    const notification = document.createElement('div');
+                    notification.classList.add('EmojiPanel-note');
+                    notification.innerHTML = note.message;
+
+                    const noteCloser = document.createElement('button');
+                    noteCloser.setAttribute('type', 'button');
+                    noteCloser.classList.add('EmojiPanel-note-close');
+                    noteCloser.innerHTML = 'X' + '<small>Don\'t show again</small>';
+                    noteCloser.addEventListener('click', function() {
+                        notifications.removeChild(notification);
+                        const opts = Storage.get(options);
+                        opts.notifications.push(note.id);
+                        Storage.save(options);
+                    });
+                    notification.appendChild(noteCloser);
+
+                    notifications.appendChild(notification);
+                }
+
+                content.appendChild(notifications);
+            }
+
             const results = document.createElement('div');
             results.classList.add('EmojiPanel-results');
             results.style.height = '160px';

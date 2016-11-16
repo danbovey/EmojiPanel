@@ -69,6 +69,44 @@
             }
         }
     }
+
+    .EmojiPanel-notifications {
+        background: #2E94B9;
+        color: darken(#2E94B9, 25%);
+
+        .EmojiPanel-note {
+            position: relative;
+            padding: 5px;
+
+            &:hover, &:focus {
+                .EmojiPanel-note-close {
+                    display: flex;
+                }
+            }
+
+            .EmojiPanel-note-close {
+                display: none;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                background: #2E94B9;
+                font-size: 24px;
+                color: #FFF;
+                cursor: pointer;
+
+                small {
+                    display: block;
+                    padding-top: 5px;
+                }
+            }
+        }
+    }
     
     .EmojiPanel-results {
         overflow: auto;

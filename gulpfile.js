@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var util = require('gulp-util');
 var watch = require('gulp-watch');
 var notify = require('gulp-notify');
 var sass = require('gulp-sass');
@@ -11,6 +12,8 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var es = require('event-stream');
 var runSequence = require('run-sequence');
+
+var dev = false;
 
 gulp.task('scss', function() {
     return gulp.src('scss/style.scss')
@@ -38,11 +41,11 @@ gulp.task('js', function() {
             })
             .pipe(source(entry))
             .pipe(buffer())
-            .pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(dev ? sourcemaps.init({loadMaps: true}) : util.noop())
             .pipe(uglify().on('error', function(e) {
                 console.log(e);
             }))
-            .pipe(sourcemaps.write())
+            .pipe(dev ? sourcemaps.write() : util.noop())
             .pipe(gulp.dest('chrome'))
             .pipe(notify("Compiled JS"));
     });
@@ -52,7 +55,13 @@ gulp.task('js', function() {
 
 gulp.task('default', function() {
     runSequence('scss', 'js');
+});
 
+gulp.task('dev', function() {
+    dev = true;
+
+    runSequence('scss', 'js');
+    
     gulp.watch('scss/**/*.scss', ['scss']);
     gulp.watch('js/**/*.js', ['js']);
 });

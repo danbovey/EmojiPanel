@@ -1,5 +1,7 @@
 const _ = require('underscore');
 
+chrome.storage.sync.clear();
+
 const Emojis = require('./emojis');
 const Forms = require('./forms');
 const Frequent = require('./frequent');
@@ -14,7 +16,8 @@ document.body.addEventListener('click', (e) => {
             const emoji = {
                 char: el.dataset.char,
                 unicode: el.dataset.unicode,
-                category: el.dataset.category
+                category: el.dataset.category,
+                name: el.dataset.name
             };
 
             Emojis.write(emoji, el.parentNode);
