@@ -74,6 +74,11 @@ const Emojis = {
         let unicode = (emoji.unicode || emoji.hex);
         let char = emoji.char;
         if(emoji.fitzpatrick) {
+            // Remove existing modifiers
+            _.each(modifiers, (m) => unicode = unicode.replace(m.unicode, ''));
+            _.each(modifiers, (m) => char = char.replace(m.char, ''));
+
+            // Append fitzpatrick modifier
             unicode += modifiers[options.fitzpatrick].unicode;
             char += modifiers[options.fitzpatrick].char;
         }
@@ -127,23 +132,31 @@ const Emojis = {
         span.dataset.pictographImage = url;
         span.innerHTML = '&emsp;';
 
+        // If it's empty, remove the default content of the input
         const div = input.querySelector('div');
         if(div.innerHTML == '<br>') {
             div.innerHTML = '';
         }
 
+        // Replace each pictograph span with it's native character
         const picts = div.querySelectorAll('.RichEditor-pictographText');
         [].forEach.call(picts, (pict) => {
-            // Replace each pictograph span with it's native character
             div.replaceChild(document.createTextNode(pict.dataset.pictographText), pict);
         });
 
+        // Split content into array, insert emoji at offset index
         let content = emojiAware.split(div.textContent);
         content.splice(offset, 0, emoji.char);
         content = content.join('');
         
         div.textContent = content;
 
+        // Trigger a refresh of the input
+        const event = document.createEvent('HTMLEvents');
+        event.initEvent('mousedown', false, true);
+        input.dispatchEvent(event);
+
+        // Update the offset to after the inserted emoji
         input.dataset.offset = parseInt(input.dataset.offset, 10) + 1;
 
         if(options.frequent.enabled == true) {
