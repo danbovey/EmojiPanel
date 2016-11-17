@@ -1,4 +1,4 @@
-const _ = require('underscore');
+const _ = require('lodash');
 
 const Storage = require('./storage');
 
@@ -10,10 +10,11 @@ const Frequent = {
             .filter((e) => {
                 return e.count > 9;
             })
-            .first(9)
+            .take(9)
             .sortBy('unicode')
             .sortBy('count')
-            ._wrapped.reverse();
+            .reverse()
+            .value();
     },
     add: (emoji, createButtonFn) => {
         const options = Storage.get();

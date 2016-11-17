@@ -1,4 +1,4 @@
-const _ = require('underscore');
+const _ = require('lodash');
 
 let options = {
     search: {
@@ -13,12 +13,10 @@ let options = {
 };
 let json = {};
 
-const notifications = [
-    {
-        id: 1,
-        message: '<strong>A Twitter update slightly broke me! <svg viewBox="0 0 20 20" width="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f631"></use></svg></strong><br>Twitter just rolled out an update to how they deal with emojis in their tweet form. Currently, all I can do is output emoji at the end of the tweet. A full fix is hopefully coming soon!'
-    }
-];
+const notifications = [{
+    id: 2,
+    message: '<strong>99% working</strong><br>Everything is back to normal. The only bug remaining is support for more than one skin tone emoji at once. It should be fixed soon <svg viewBox="0 0 20 20" width="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f44d"></use></svg>.'
+}];
 
 const Storage = {
     load: () => {

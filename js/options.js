@@ -34,8 +34,6 @@ var restore_options = function() {
         search.checked = items.search.enabled;
         frequent.checked = items.frequent.enabled;
         frequentCount.textContent = items.frequent.list.length;
-
-        console.log(items);
     });
 };
 

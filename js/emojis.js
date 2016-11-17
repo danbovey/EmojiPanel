@@ -1,4 +1,5 @@
-const _ = require('underscore');
+const _ = require('lodash');
+const emojiAware = require('emoji-aware');
 
 const Storage = require('./storage');
 const Frequent = require('./frequent');
@@ -130,8 +131,18 @@ const Emojis = {
         if(div.innerHTML == '<br>') {
             div.innerHTML = '';
         }
-        div.appendChild(span);
-        input.focus();
+
+        const picts = div.querySelectorAll('.RichEditor-pictographText');
+        [].forEach.call(picts, (pict) => {
+            // Replace each pictograph span with it's native character
+            div.replaceChild(document.createTextNode(pict.dataset.pictographText), pict);
+        });
+
+        let content = emojiAware.split(div.textContent);
+        content.splice(offset, 0, emoji.char);
+        content = content.join('');
+        
+        div.textContent = content;
 
         input.dataset.offset = parseInt(input.dataset.offset, 10) + 1;
 

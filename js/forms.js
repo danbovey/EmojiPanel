@@ -1,4 +1,4 @@
-const _ = require('underscore');
+const _ = require('lodash');
 
 const Emojis = require('./emojis');
 const Frequent = require('./frequent');
@@ -137,14 +137,17 @@ const forms = {
                         modifierDropdown.classList.remove('active');
                         Storage.save(options);
 
-                        // Refresh every list with new scale
+                        // Refresh every emoji in any list with new skin tone
                         const emojis = [].forEach.call(document.querySelectorAll('.EmojiPanel .emoji'), (emoji) => {
                             if(emoji.dataset.fitzpatrick) {
-                                let uni = emoji.dataset.unicode;
-                                for(var i in modifiers) {
-                                    uni = uni.replace(modifiers[i], '');
+                                const emojiObj = {
+                                    unicode: emoji.dataset.unicode,
+                                    char: emoji.dataset.char,
+                                    fitzpatrick: true,
+                                    category: emoji.dataset.category,
+                                    name: emoji.dataset.name
                                 }
-                                emoji.innerHTML = Emojis.createSVG({ unicode: uni + modifier });
+                                emoji.parentNode.replaceChild(Emojis.createButton(emojiObj), emoji);
                             }
                         });
                     });

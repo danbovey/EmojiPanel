@@ -1,6 +1,4 @@
-const _ = require('underscore');
-
-chrome.storage.sync.clear();
+const _ = require('lodash');
 
 const Emojis = require('./emojis');
 const Forms = require('./forms');
