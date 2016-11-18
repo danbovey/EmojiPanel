@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/danbovey/EmojiPanel#readme",
   "dependencies": {
-    "emoji-aware": "^3.0.0",
+    "emoji-aware": "^3.0.1",
     "lodash": "^4.17.2",
     "underscore": "^1.8.3"
   },

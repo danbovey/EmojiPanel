@@ -16,6 +16,7 @@ const Emojis = {
         };
         svgXhr.send();
 
+        // Load the emojis json
         return new Promise((resolve) => {
             const emojiXhr = new XMLHttpRequest();
             emojiXhr.open('GET', chrome.extension.getURL('emojis.json'), true);
