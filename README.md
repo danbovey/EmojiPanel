@@ -3,18 +3,18 @@
 
 An open-source Chrome Extension that adds a dropdown panel with all emojis to the Twitter tweet box :heart_eyes:.
 
-- One click adds the emoji into the tweet editor
-- Search for emojis using keywords <- More coming soon
-- No ads
-- Retina graphics
+- :simple_smile: Open a panel with a simple integrated button
+- :dart: One click adds the emoji into the tweet editor
+- :1234: Your frequently used emoji are stored at the top
+- :thumbsup: Skin tone modifier and Unicode 9 emojis
+- :mag: Search for emojis using keywords and names
+- :arrows_counterclockwise: Will continue to be updated when new Unicode emojis are added
+
+### [Download for Google Chrome](https://chrome.google.com/webstore/detail/gndnmajcnnbidkknfijkbfhhnlibmmdo)
 
 ## Preview
 
-![Screenshot](http://i.imgur.com/fsr32JX.png)
-
-## Download
-
-### [Download for Google Chrome](https://chrome.google.com/webstore/detail/gndnmajcnnbidkknfijkbfhhnlibmmdo)
+![Screenshot](http://i.imgur.com/xQR24Dg.png)
 
 ## A note on maintainability
 
