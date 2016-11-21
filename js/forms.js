@@ -1,10 +1,10 @@
-const _ = require('lodash');
+const _ = require('lodash/core');
 
 const Emojis = require('./emojis');
 const Frequent = require('./frequent');
 const Storage = require('./storage');
 
-const forms = {
+const Forms = {
     check: () => {
         const options = Storage.get();
         const json = Storage.getJson();
@@ -12,7 +12,7 @@ const forms = {
         const all = document.querySelectorAll('.tweet-form');
         [].forEach.call(all, (form) => {
             if(!form.classList.contains('EmojiPanel')) {
-                forms.create(form, options, json);
+                Forms.create(form, options, json);
             }
         });
     },
@@ -21,7 +21,7 @@ const forms = {
 
         const tweetBox = form.querySelector('.tweet-box');
         const handleChange = (e) => {
-            tweetBox.dataset.offset = forms.getCaretPosition(tweetBox);
+            tweetBox.dataset.offset = Forms.getCaretPosition(tweetBox);
         };
         tweetBox.addEventListener('keyup', handleChange);
         tweetBox.addEventListener('change', handleChange);
@@ -29,6 +29,7 @@ const forms = {
 
         const extras = form.querySelector('.tweet-box-extras');
         if(extras) {
+            // Insert the extra button
             const extraItem = document.createElement('div');
             extraItem.classList.add('TweetBoxExtras-item');
 
@@ -51,7 +52,7 @@ const forms = {
             let color = '#2F9AC2'; // Default Twitter color
             const otherIcon = form.querySelector('.TweetBoxExtras-item .Icon');
             if(otherIcon) {
-                color = window.getComputedStyle(otherIcon).color
+                color = window.getComputedStyle(otherIcon).color;
             }
             icon.style.color = color;
             btn.appendChild(icon);
@@ -72,6 +73,7 @@ const forms = {
                 }
             });
 
+            // Create the dropdown
             const dropdownMenu = document.createElement('div');
             dropdownMenu.classList.add('dropdown-menu', 'EmojiPanel-dropdownMenu');
             dropdownMenu.tabIndex = -1;
@@ -230,6 +232,11 @@ const forms = {
             }
 
             _.each(json, (category) => {
+                // Don't show the Modifier category
+                if(category.name == 'modifier') {
+                    return;
+                }
+
                 const title = document.createElement('p');
                 title.classList.add('category-title');
 
@@ -277,7 +284,6 @@ const forms = {
 
                         if(matched.length == 0) {
                             emptyState.style.display = 'block';
-
                         } else {
                             emptyState.style.display = 'none';
                         }
@@ -341,4 +347,4 @@ const forms = {
     }
 };
 
-module.exports = forms;
+module.exports = Forms;

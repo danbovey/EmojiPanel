@@ -1,16 +1,16 @@
-const _ = require('lodash');
+const _ = require('lodash/core');
 
 const Storage = require('./storage');
 
 const Frequent = {
     get: () => {
         const options = Storage.get();
-        // Must be used at least times times, return the top 9
+        // Must be used at least 10 times, return the top 9
         return _.chain(options.frequent.list)
             .filter((e) => {
-                return e.count > 9;
+                return e.count >= 10;
             })
-            .take(9)
+            .slice(0, 9)
             .sortBy('unicode')
             .sortBy('count')
             .reverse()

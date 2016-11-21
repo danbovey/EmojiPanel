@@ -1,4 +1,5 @@
-const _ = require('lodash');
+const _ = require('lodash/core');
+const reject = require('lodash/reject');
 
 let options = {
     search: {
@@ -19,7 +20,7 @@ const Storage = {
     load: () => {
         return new Promise((resolve) => {
             chrome.storage.sync.get(null, (items) => {
-                _.extend(options, items);
+                Object.assign(options, items);
                 resolve(options);
             });
         });
@@ -43,7 +44,7 @@ const Storage = {
     },
     getNotifications: () => {
         const options = Storage.get();
-        return _.reject(notifications, (note) => options.notifications.indexOf(note.id) > -1);
+        return reject(notifications, (note) => options.notifications.indexOf(note.id) > -1);
     }
 };
 
