@@ -10,7 +10,9 @@ An open-source Chrome Extension that adds a dropdown panel with all emojis to th
 - :mag: Search for emojis using keywords and names
 - :arrows_counterclockwise: Will continue to be updated when new Unicode emojis are added
 
-### [Download for Google Chrome](https://chrome.google.com/webstore/detail/gndnmajcnnbidkknfijkbfhhnlibmmdo)
+### [Download for Google Chrome](https://chrome.google.com/webstore/detail/jfjmncmbmpnaljmmcmeefmkmionkojmd)
+
+:warning: EmojiPanel has merged with the EmojiT extension, and we now publish to a different extension page. Please consider switching to the new extension linked above for updates.
 
 ## Preview
 
