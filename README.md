@@ -1,6 +1,14 @@
 ![EmojiPanel Logo](http://i.imgur.com/Os8izFU.png)
 # EmojiPanel for Twitter
 
+:warning: Twitter are rolling out their own Emoji Picker, finally! We hope Twitter looked at all 24,000 of you using this extension and built an emoji dropdown that everyone can enjoy! Thanks for your support. 🤗
+
+### Future of EmojiPanel
+
+I'm hoping to turn EmojiPanel into a generic JS implementation that can be used on any HTML input! Check this space!! :v:
+
+---
+
 An open-source Chrome Extension that adds a dropdown panel with all emojis to the Twitter tweet box :heart_eyes:.
 
 - :slightly_smiling_face: Open a panel with a simple integrated button
@@ -11,8 +19,6 @@ An open-source Chrome Extension that adds a dropdown panel with all emojis to th
 - :arrows_counterclockwise: Will continue to be updated when new Unicode emojis are added
 
 ### [Download for Google Chrome](https://chrome.google.com/webstore/detail/jfjmncmbmpnaljmmcmeefmkmionkojmd)
-
-:warning: EmojiPanel has merged with the EmojiT extension, and we now publish to a different extension page. Please consider switching to the new extension linked above for updates.
 
 ## Preview
 
