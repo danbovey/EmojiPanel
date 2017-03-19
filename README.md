@@ -5,6 +5,8 @@
 
 EmojiPanel is a Javascript emoji picker that used to be a popular Chrome extension for Twitter! View the examples on our project page: [emojipanel.js.org](https://emojipanel.js.org).
 
+![Preview](http://i.imgur.com/AvbH2ds.png)
+
 - ✏️ Select and write emoji using any sprite sheet
 - 📊 Keeps track of users frequently used emojis
 - 🎛 A lot of options & customisable SCSS styles
