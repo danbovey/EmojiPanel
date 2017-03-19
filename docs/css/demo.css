@@ -86,6 +86,20 @@ table tr td, table tr th {
     padding: 5px 10px;
     border: 1px solid #DDD;
 }
+@media(max-width: 450px) {
+    table thead {
+        display: none;
+    }
+    table tr {
+        display: block;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #DDD;
+    }
+    table tr td {
+        display: block;
+        border: none;
+    }
+}
 ul {
     padding: 0;
     list-style: none;
