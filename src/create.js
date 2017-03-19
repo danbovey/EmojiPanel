@@ -83,7 +83,7 @@ const Create = (options, emit) => {
         query.appendChild(icon);
 
         const searchTitle = document.createElement('p');
-        searchTitle.classList.add('EmojiPanel__category');
+        searchTitle.classList.add('EmojiPanel__category', 'EmojiPanel__searchTitle');
         searchTitle.style.display = 'none';
         searchTitle.innerHTML = options.locale.search_results;
         results.appendChild(searchTitle);

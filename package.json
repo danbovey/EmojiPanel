@@ -9,6 +9,7 @@
     "build-packs": "node build/packs.js",
     "docs": "http-server ./docs"
   },
+  "pre-commit": ["build"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/danbovey/EmojiPanel.git"
@@ -39,6 +40,7 @@
     "gulp-uglify": "^2.1.0",
     "gulp-util": "^3.0.8",
     "http-server": "^0.9.0",
+    "pre-commit": "^1.2.2",
     "run-sequence": "^1.2.2",
     "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",

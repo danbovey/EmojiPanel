@@ -4,6 +4,8 @@ const modifiers = require('./modifiers');
 const list = (options, panel, json, emit) => {
     const categories = panel.querySelector('.EmojiPanel__categories');
     const searchInput = panel.querySelector('.EmojiPanel__queryInput');
+    const searchTitle = panel.querySelector('.EmojiPanel__searchTitle');
+    const frequentTitle = panel.querySelector('.EmojiPanel__frequentTitle');
     const results = panel.querySelector('.EmojiPanel__results');
     const emptyState = panel.querySelector('.EmojiPanel__noResults');
     const footer = panel.querySelector('.EmojiPanel__footer');
