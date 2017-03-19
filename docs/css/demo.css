@@ -13,12 +13,14 @@ body {
 }
 
 a {
-    text-decoration: none;
-    color: #333;
+    color: #4E94C2;
 }
 
 nav {
     margin-bottom: 20px;
+}
+header nav a {
+    text-decoration: none;
 }
 header nav a:after {
     margin: 0 1em;

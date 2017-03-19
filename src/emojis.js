@@ -4,13 +4,13 @@ const Emojis = {
     load: options => {
         // Load and inject the SVG sprite into the DOM
         let svgPromise = Promise.resolve();
-        if(options.pack_url && !document.querySelector('EmojiPanel__svg')) {
+        if(options.pack_url && !document.querySelector(options.classnames.svg)) {
             svgPromise = new Promise(resolve => {
                 const svgXhr = new XMLHttpRequest();
                 svgXhr.open('GET', options.pack_url, true);
                 svgXhr.onload = () => {
                     const container = document.createElement('div');
-                    container.classList.add('EmojiPanel__svg');
+                    container.classList.add(options.classnames.svg);
                     container.style.display = 'none';
                     container.innerHTML = svgXhr.responseText;
                     document.body.appendChild(container);
@@ -41,7 +41,7 @@ const Emojis = {
     },
     createEl: (emoji, options) => {
         if(options.pack_url) {
-            if(document.querySelector(`.EmojiPanel__svg [id="${emoji.unicode}"`)) {
+            if(document.querySelector(`.${options.classnames.svg} [id="${emoji.unicode}"`)) {
                 return `<svg viewBox="0 0 20 20"><use xlink:href="#${emoji.unicode}"></use></svg>`;
             }
         }
@@ -50,7 +50,7 @@ const Emojis = {
         return emoji.char;
     },
     createButton: (emoji, options, emit) => {
-        if(emoji.fitzpatrick) {
+        if(emoji.fitzpatrick && options.fitzpatrick) {
             // Remove existing modifiers
             Object.keys(modifiers).forEach(i => emoji.unicode = emoji.unicode.replace(modifiers[i].unicode, ''));
             Object.keys(modifiers).forEach(i => emoji.char = emoji.char.replace(modifiers[i].char, ''));
@@ -141,7 +141,7 @@ const Emojis = {
         // Update the offset to after the inserted emoji
         input.dataset.offset = parseInt(input.dataset.offset, 10) + 1;
 
-        if(options.frequent.enabled == true) {
+        if(options.frequent == true) {
             Frequent.add(emoji, Emojis.createButton);
         }
     }

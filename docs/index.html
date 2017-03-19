@@ -23,19 +23,46 @@
             <p>EmojiPanel is a Javascript emoji picker that used to<br>be a popular Chrome extension for Twitter!</p>
             <div id="home" class="demo-centerpanel"></div>
         </section>
-        <section class="features">
+        <section id="features">
             <ul>
                 <li><svg viewBox="0 0 20 20" class="inline-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#270f"></use></svg> Select and write emoji using any sprite sheet</li>
-                <li><svg viewBox="0 0 20 20" class="inline-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f4ca"></use></svg> Keeps track of users frequently used emojis</li>
-                <li><svg viewBox="0 0 20 20" class="inline-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f39b"></use></svg> A lot of options &amp; customisable SCSS styles</li>
+                <li><svg viewBox="0 0 20 20" class="inline-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f4ca"></use></svg> Keep track of users frequently used emojis</li>
+                <li><svg viewBox="0 0 20 20" class="inline-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f39b"></use></svg> Lots of options &amp; customisable SCSS styles</li>
                 <li><svg viewBox="0 0 20 20" class="inline-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f4e1"></use></svg> Listen for events such as <code>select</code> or <code>search</code></li>
+                <li><svg viewBox="0 0 20 20" class="inline-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f4e6"></use></svg> No dependencies</li>
             </ul>
         </section>
-        <section class="install">
+        <section id="install">
             <h3>Get Started</h3>
             <code>npm i emojipanel</code>
         </section>
-        <section class="options">
+        <section id="static">
+            <h3>Static mode</h3>
+            <p>The <code>container</code> is the element that the panel is appended to, it is required. By not<br>specifying a <code>trigger</code>, the panel will always be visible, as shown above.</p>
+            <code class="full"><pre>new EmojiPanel({
+    container: '#container'
+});
+</pre></code>
+        </section>
+        <section id="trigger">
+            <h3>Trigger mode</h3>
+            <p>In trigger mode, the EmojiPanel is hidden until triggered by a button or manually with <code>toggle()</code>.<br>Set <code>trigger</code> to <code>true</code> to allow the panel to be manually triggered. <a href="/examples/trigger.html">Trigger example</a></p>
+            <code class="full"><pre>new EmojiPanel({
+    container: '#container',
+    trigger: '#btn-trigger'
+});
+</pre></code>
+        </section>
+        <section id="editable">
+            <h3>ContentEditable</h3>
+            <p>The panel can add emoji characters to a text input or contenteditable element.</p>
+            <code class="full"><pre>new EmojiPanel({
+    container: '#container',
+    editable: '#input'
+});
+</pre></code>
+        </section>
+        <section id="options">
             <h3>Options</h3>
             <table>
                 <thead>
@@ -55,6 +82,11 @@
                         <td>frequent</td>
                         <td><code>true</code></td>
                         <td>Enable the frequently used feature</td>
+                    </tr>
+                    <tr>
+                        <td>fitzpatrick</td>
+                        <td><code>'a'</code></td>
+                        <td>The initial skin tone modifier. Set to false to disable</td>
                     </tr>
                     <tr>
                         <td>hidden_categories</td>
@@ -84,7 +116,7 @@
                     <tr>
                         <td>locale</td>
                         <td><code>{}</code></td>
-                        <td>Translations for: <code>add</code>, <code>search</code>, <code>search_results</code>, <code>no_results</code>, <code>frequent</code>, <code>brand</code></td>
+                        <td>See <a href="#translations">Translations</a></td>
                     </tr>
                     <tr>
                         <td>icons</td>
@@ -93,6 +125,26 @@
                     </tr>
                 </tbody>
             </table>
+        </section>
+        <section id="methods">
+            <h3>Methods</h3>
+            <ul>
+                <li><code>toggle</code> - Manually trigger the panel</li>
+                <li><code>reposition</code> - Realign the panel's tether to the trigger</li>
+            </ul>
+        </section>
+        <section id="translations">
+            <h3>Translations</h3>
+            <p>Set the <code>locale</code> object in options to change the translations for:</p>
+            <ul>
+                <li><code>add</code> - Add emoji</li>
+                <li><code>brand</code> - EmojiPanel - Remove watermark with <code>''</code></li>
+                <li><code>frequent</code> - Frequently used</li>
+                <li><code>loading</code> - Loading...</li>
+                <li><code>no_results</code> - No results</li>
+                <li><code>search</code> - Search</li>
+                <li><code>search_results</code> - Search results</li>
+            </ul>
         </section>
     </main>
     <svg viewBox="0 0 20 20" class="giant-emoji"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#1f642"></use></svg>

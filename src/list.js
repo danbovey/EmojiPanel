@@ -2,13 +2,13 @@ const Emojis = require('./emojis');
 const modifiers = require('./modifiers');
 
 const list = (options, panel, json, emit) => {
-    const categories = panel.querySelector('.EmojiPanel__categories');
-    const searchInput = panel.querySelector('.EmojiPanel__queryInput');
-    const searchTitle = panel.querySelector('.EmojiPanel__searchTitle');
-    const frequentTitle = panel.querySelector('.EmojiPanel__frequentTitle');
-    const results = panel.querySelector('.EmojiPanel__results');
-    const emptyState = panel.querySelector('.EmojiPanel__noResults');
-    const footer = panel.querySelector('.EmojiPanel__footer');
+    const categories = panel.querySelector('.' + options.classnames.categories);
+    const searchInput = panel.querySelector('.' + options.classnames.searchInput);
+    const searchTitle = panel.querySelector('.' + options.classnames.searchTitle);
+    const frequentTitle = panel.querySelector('.' + options.classnames.frequentTitle);
+    const results = panel.querySelector('.' + options.classnames.results);
+    const emptyState = panel.querySelector('.' + options.classnames.noResults);
+    const footer = panel.querySelector('.' + options.classnames.footer);
 
     // Update the category links
     while (categories.firstChild) {
@@ -23,7 +23,7 @@ const list = (options, panel, json, emit) => {
         }
 
         const categoryLink = document.createElement('button');
-        categoryLink.classList.add('emoji');
+        categoryLink.classList.add(options.classnames.emoji);
         categoryLink.setAttribute('title', category.name);
         categoryLink.innerHTML = Emojis.createEl(category.icon, options);
         categoryLink.addEventListener('click', e => {
@@ -36,8 +36,8 @@ const list = (options, panel, json, emit) => {
     // Handle the search input
     if(options.search == true) {
         searchInput.addEventListener('input', e => {
-            const emojis = results.querySelectorAll('.emoji');
-            const titles = results.querySelectorAll('.EmojiPanel__category');
+            const emojis = results.querySelectorAll('.' + options.classnames.emoji);
+            const titles = results.querySelectorAll('.' + options.classnames.category);
 
             let frequentList = localStorage.getItem('EmojiPanel-frequent');
             if(frequentList) {
@@ -119,7 +119,7 @@ const list = (options, panel, json, emit) => {
 
         // Create the category title
         const title = document.createElement('p');
-        title.classList.add('EmojiPanel__category');
+        title.classList.add(options.classnames.category);
         title.id = category.name;
         let categoryName = category.name.replace(/_/g, ' ')
             .replace(/\w\S*/g, (name) => name.charAt(0).toUpperCase() + name.substr(1).toLowerCase())
@@ -131,62 +131,64 @@ const list = (options, panel, json, emit) => {
         category.emojis.forEach(emoji => results.appendChild(Emojis.createButton(emoji, options, emit)));
     });
 
-    // Create the fitzpatrick modifier button
-    const hand = { // ✋
-        unicode: '270b' + modifiers[options.fitzpatrick].unicode,
-        char: '✋'
-    };
-    let modifierDropdown;
-    const modifierToggle = document.createElement('button');
-    modifierToggle.setAttribute('type', 'button');
-    modifierToggle.classList.add('EmojiPanel__btnModifier', 'EmojiPanel__btnModifierToggle', 'emoji');
-    modifierToggle.innerHTML = Emojis.createEl(hand, options);
-    modifierToggle.addEventListener('click', () => {
-        modifierDropdown.classList.toggle('active');
-        modifierToggle.classList.toggle('active');
-    });
-    footer.appendChild(modifierToggle);
-
-    modifierDropdown = document.createElement('div');
-    modifierDropdown.classList.add('EmojiPanel__modifierDropdown');
-    Object.keys(modifiers).forEach(m => {
-        const modifier = Object.assign({}, modifiers[m]);
-        modifier.unicode = '270b' + modifier.unicode;
-        modifier.char = '✋' + modifier.char;
-        const modifierBtn = document.createElement('button');
-        modifierBtn.setAttribute('type', 'button');
-        modifierBtn.classList.add('EmojiPanel__btnModifier', 'emoji');
-        modifierBtn.dataset.modifier = m;
-        modifierBtn.innerHTML = Emojis.createEl(modifier, options);
-
-        modifierBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            e.preventDefault();
-
-            modifierToggle.classList.remove('active');
-            modifierToggle.innerHTML = Emojis.createEl(modifier, options);
-
-            options.fitzpatrick = modifierBtn.dataset.modifier;
-            modifierDropdown.classList.remove('active');
-
-            // Refresh every emoji in any list with new skin tone
-            const emojis = [].forEach.call(options.container.querySelectorAll('.EmojiPanel__results .emoji'), emoji => {
-                if(emoji.dataset.fitzpatrick) {
-                    const emojiObj = {
-                        unicode: emoji.dataset.unicode,
-                        char: emoji.dataset.char,
-                        fitzpatrick: true,
-                        category: emoji.dataset.category,
-                        name: emoji.dataset.name
-                    }
-                    emoji.parentNode.replaceChild(Emojis.createButton(emojiObj, options, emit), emoji);
-                }
-            });
+    if(options.fitzpatrick) {
+        // Create the fitzpatrick modifier button
+        const hand = { // ✋
+            unicode: '270b' + modifiers[options.fitzpatrick].unicode,
+            char: '✋'
+        };
+        let modifierDropdown;
+        const modifierToggle = document.createElement('button');
+        modifierToggle.setAttribute('type', 'button');
+        modifierToggle.classList.add(options.classnames.btnModifier, options.classnames.btnModifierToggle, options.classnames.emoji);
+        modifierToggle.innerHTML = Emojis.createEl(hand, options);
+        modifierToggle.addEventListener('click', () => {
+            modifierDropdown.classList.toggle('active');
+            modifierToggle.classList.toggle('active');
         });
+        footer.appendChild(modifierToggle);
 
-        modifierDropdown.appendChild(modifierBtn);
-    });
-    footer.appendChild(modifierDropdown);
+        modifierDropdown = document.createElement('div');
+        modifierDropdown.classList.add(options.classnames.modifierDropdown);
+        Object.keys(modifiers).forEach(m => {
+            const modifier = Object.assign({}, modifiers[m]);
+            modifier.unicode = '270b' + modifier.unicode;
+            modifier.char = '✋' + modifier.char;
+            const modifierBtn = document.createElement('button');
+            modifierBtn.setAttribute('type', 'button');
+            modifierBtn.classList.add(options.classnames.btnModifier, options.classnames.emoji);
+            modifierBtn.dataset.modifier = m;
+            modifierBtn.innerHTML = Emojis.createEl(modifier, options);
+
+            modifierBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                e.preventDefault();
+
+                modifierToggle.classList.remove('active');
+                modifierToggle.innerHTML = Emojis.createEl(modifier, options);
+
+                options.fitzpatrick = modifierBtn.dataset.modifier;
+                modifierDropdown.classList.remove('active');
+
+                // Refresh every emoji in any list with new skin tone
+                const emojis = [].forEach.call(options.container.querySelectorAll(`.${options.classnames.results}  .${options.classnames.emoji}`), emoji => {
+                    if(emoji.dataset.fitzpatrick) {
+                        const emojiObj = {
+                            unicode: emoji.dataset.unicode,
+                            char: emoji.dataset.char,
+                            fitzpatrick: true,
+                            category: emoji.dataset.category,
+                            name: emoji.dataset.name
+                        }
+                        emoji.parentNode.replaceChild(Emojis.createButton(emojiObj, options, emit), emoji);
+                    }
+                });
+            });
+
+            modifierDropdown.appendChild(modifierBtn);
+        });
+        footer.appendChild(modifierDropdown);
+    }
 };
 
 module.exports = list;

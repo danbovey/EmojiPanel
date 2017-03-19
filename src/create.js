@@ -2,7 +2,7 @@ const Tether = require('tether');
 
 const Emojis = require('./emojis');
 
-const Create = (options, emit) => {
+const Create = (options, emit, toggle) => {
     if(options.editable) {
         // Set the caret offset on the input
         const handleChange = e => {
@@ -15,9 +15,9 @@ const Create = (options, emit) => {
 
     // Create the dropdown panel
     const panel = document.createElement('div');
-    panel.classList.add('EmojiPanel');
+    panel.classList.add(options.classnames.panel);
     const content = document.createElement('div');
-    content.classList.add('EmojiPanel__content');
+    content.classList.add(options.classnames.content);
     panel.appendChild(content);
 
     let searchInput;
@@ -26,32 +26,25 @@ const Create = (options, emit) => {
     let frequentTitle;
 
     if(options.trigger) {
-        panel.classList.add('EmojiPanel--trigger');
+        panel.classList.add(options.classnames.trigger);
         // Listen for the trigger
-        options.trigger.addEventListener('click', () => {
-            const open = panel.classList.toggle('EmojiPanel--open');
-            
-            emit('toggle', open);
-            if(open && options.search.enabled && searchInput) {
-                searchInput.focus();
-            }
-        });
+        options.trigger.addEventListener('click', () => toggle());
 
         // Create the tooltip
         options.trigger.setAttribute('title', options.locale.add);
         const tooltip = document.createElement('span');
-        tooltip.classList.add('EmojiPanel__tooltip');
+        tooltip.classList.add(options.classnames.tooltip);
         tooltip.innerHTML = options.locale.add;
         options.trigger.appendChild(tooltip);
     }
 
     // Create the category links
     const header = document.createElement('header');
-    header.classList.add('EmojiPanel__header');
+    header.classList.add(options.classnames.header);
     content.appendChild(header);
 
     const categories = document.createElement('div');
-    categories.classList.add('EmojiPanel__categories');
+    categories.classList.add(options.classnames.categories);
     header.appendChild(categories);
 
     for(let i = 0; i < 9; i++) {
@@ -62,17 +55,17 @@ const Create = (options, emit) => {
     
     // Create the list
     results = document.createElement('div');
-    results.classList.add('EmojiPanel__results');
+    results.classList.add(options.classnames.results);
     content.appendChild(results);
 
     // Create the search input
     if(options.search == true) {
         const query = document.createElement('div');
-        query.classList.add('EmojiPanel__query');
+        query.classList.add(options.classnames.query);
         header.appendChild(query);
 
         searchInput = document.createElement('input');
-        searchInput.classList.add('EmojiPanel__queryInput');
+        searchInput.classList.add(options.classnames.searchInput);
         searchInput.setAttribute('type', 'text');
         searchInput.setAttribute('autoComplete', 'off');
         searchInput.setAttribute('placeholder', options.locale.search);
@@ -83,13 +76,13 @@ const Create = (options, emit) => {
         query.appendChild(icon);
 
         const searchTitle = document.createElement('p');
-        searchTitle.classList.add('EmojiPanel__category', 'EmojiPanel__searchTitle');
+        searchTitle.classList.add(options.classnames.category, options.classnames.searchTitle);
         searchTitle.style.display = 'none';
         searchTitle.innerHTML = options.locale.search_results;
         results.appendChild(searchTitle);
 
         emptyState = document.createElement('span');
-        emptyState.classList.add('EmojiPanel__noResults');
+        emptyState.classList.add(options.classnames.noResults);
         emptyState.innerHTML = options.locale.no_results;
         results.appendChild(emptyState);
     }
@@ -102,7 +95,7 @@ const Create = (options, emit) => {
             frequentList = [];
         }
         frequentTitle = document.createElement('p');
-        frequentTitle.classList.add('EmojiPanel__category', 'EmojiPanel__frequentTitle');
+        frequentTitle.classList.add(options.classnames.category, options.classnames.frequentTitle);
         frequentTitle.innerHTML = options.locale.frequent;
         if(frequentList.length == 0) {
             frequentTitle.style.display = 'none';
@@ -119,7 +112,7 @@ const Create = (options, emit) => {
     }
 
     const loadingTitle = document.createElement('p');
-    loadingTitle.classList.add('EmojiPanel__category');
+    loadingTitle.classList.add(options.classnames.category);
     loadingTitle.textContent = options.locale.loading;
     results.appendChild(loadingTitle);
     for(let i = 0; i < 9 * 8; i++) {
@@ -129,13 +122,13 @@ const Create = (options, emit) => {
     }
 
     const footer = document.createElement('footer');
-    footer.classList.add('EmojiPanel__footer');
+    footer.classList.add(options.classnames.footer);
     panel.appendChild(footer);
 
     if(options.locale.brand) {
         const brand = document.createElement('a');
-        brand.classList.add('EmojiPanel__brand');
-        brand.setAttribute('href', 'https://github.com/danbovey/EmojiPanel');
+        brand.classList.add(options.classnames.brand);
+        brand.setAttribute('href', 'https://emojipanel.js.org');
         brand.textContent = options.locale.brand;
         footer.appendChild(brand);
     }
@@ -144,6 +137,7 @@ const Create = (options, emit) => {
     options.container.appendChild(panel);
 
     // Tether the dropdown to the trigger
+    let tether;
     if(options.trigger && options.tether) {
         const placements = ['top', 'right', 'bottom', 'left'];
         if(placements.indexOf(options.placement) == -1) {
@@ -163,7 +157,7 @@ const Create = (options, emit) => {
                 break;
         }
 
-        new Tether({
+        tether = new Tether({
             element: panel,
             target: options.trigger,
             attachment,
@@ -172,7 +166,10 @@ const Create = (options, emit) => {
     }
 
     // Return the panel element so we can update it later
-    return panel;
+    return {
+        panel,
+        tether
+    };
 };
 
 const getCaretPosition = el => {
