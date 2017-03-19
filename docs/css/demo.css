@@ -12,6 +12,11 @@ body {
     color: #555;
 }
 
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
 a {
     color: #4E94C2;
 }
@@ -73,7 +78,7 @@ table, ul {
     margin: 0 auto;
 }
 table {
-    max-width: 700px;
+    width: 100%;
     border-collapse: collapse;
 }
 table tr td, table tr th {
@@ -81,11 +86,13 @@ table tr td, table tr th {
     border: 1px solid #DDD;
 }
 ul {
-    max-width: 400px;
     padding: 0;
     list-style: none;
     text-align: left;
     line-height: 2.5;
+}
+#features ul {
+    max-width: 400px;
 }
 ul .inline-emoji {
     margin-right: 20px;
@@ -103,9 +110,12 @@ code {
 }
 code.full {
     display: block;
-    max-width: 400px;
     margin: 0 auto;
+    padding-bottom: 0;
     text-align: left;
+}
+code.full pre {
+    margin: 0;
 }
 
 .home section {
