@@ -49,29 +49,37 @@ const Emojis = {
         // Fallback to the emoji char if the pack does not have the sprite, or no pack
         return emoji.char;
     },
-    createButton: (emoji, options) => {
-        let unicode = emoji.unicode;
-        let char = emoji.char;
+    createButton: (emoji, options, emit) => {
         if(emoji.fitzpatrick) {
             // Remove existing modifiers
-            Object.keys(modifiers).forEach(m => unicode = unicode.replace(m.unicode, ''));
-            Object.keys(modifiers).forEach(m => char = char.replace(m.char, ''));
+            Object.keys(modifiers).forEach(i => emoji.unicode = emoji.unicode.replace(modifiers[i].unicode, ''));
+            Object.keys(modifiers).forEach(i => emoji.char = emoji.char.replace(modifiers[i].char, ''));
 
             // Append fitzpatrick modifier
-            unicode += modifiers[options.fitzpatrick].unicode;
-            char += modifiers[options.fitzpatrick].char;
+            emoji.unicode += modifiers[options.fitzpatrick].unicode;
+            emoji.char += modifiers[options.fitzpatrick].char;
         }
 
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
         button.innerHTML = Emojis.createEl(emoji, options);
         button.classList.add('emoji');
-        button.dataset.unicode = unicode;
-        button.dataset.char = char;
+        button.dataset.unicode = emoji.unicode;
+        button.dataset.char = emoji.char;
         button.dataset.category = emoji.category;
         button.dataset.name = emoji.name;
         if(emoji.fitzpatrick) {
             button.dataset.fitzpatrick = emoji.fitzpatrick;
+        }
+
+        if(emit) {
+            button.addEventListener('click', () => {
+                emit('select', emoji);
+
+                if(options.editable) {
+                    Emojis.write(emoji, options);
+                }
+            });
         }
 
         return button;

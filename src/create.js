@@ -1,9 +1,8 @@
 const Tether = require('tether');
 
 const Emojis = require('./emojis');
-const modifiers = require('./modifiers');
 
-const Create = (options, json, emit) => {
+const Create = (options, emit) => {
     if(options.editable) {
         // Set the caret offset on the input
         const handleChange = e => {
@@ -22,6 +21,10 @@ const Create = (options, json, emit) => {
     panel.appendChild(content);
 
     let searchInput;
+    let results;
+    let emptyState;
+    let frequentTitle;
+
     if(options.trigger) {
         panel.classList.add('EmojiPanel--trigger');
         // Listen for the trigger
@@ -50,21 +53,15 @@ const Create = (options, json, emit) => {
     const categories = document.createElement('div');
     categories.classList.add('EmojiPanel__categories');
     header.appendChild(categories);
-    Object.keys(json).forEach(i => {
-        const category = json[i];
 
+    for(let i = 0; i < 9; i++) {
         const categoryLink = document.createElement('button');
-        categoryLink.classList.add('emoji')
-        categoryLink.setAttribute('title', category.name);
-        categoryLink.innerHTML = Emojis.createEl(category.icon, options);
-        categoryLink.addEventListener('click', e => {
-            console.log('Going to', category);
-        });
+        categoryLink.classList.add('temp');
         categories.appendChild(categoryLink);
-    });
+    }
     
     // Create the list
-    const results = document.createElement('div');
+    results = document.createElement('div');
     results.classList.add('EmojiPanel__results');
     content.appendChild(results);
 
@@ -91,15 +88,20 @@ const Create = (options, json, emit) => {
         searchTitle.innerHTML = options.locale.search_results;
         results.appendChild(searchTitle);
 
-        const emptyState = document.createElement('span');
+        emptyState = document.createElement('span');
         emptyState.classList.add('EmojiPanel__noResults');
         emptyState.innerHTML = options.locale.no_results;
         results.appendChild(emptyState);
     }
 
     if(options.frequent == true) {
-        const frequentList = [] // Frequent.get();
-        const frequentTitle = document.createElement('p');
+        let frequentList = localStorage.getItem('EmojiPanel-frequent');
+        if(frequentList) {
+            frequentList = JSON.parse(frequentList);
+        } else {
+            frequentList = [];
+        }
+        frequentTitle = document.createElement('p');
         frequentTitle.classList.add('EmojiPanel__category', 'EmojiPanel__frequentTitle');
         frequentTitle.innerHTML = options.locale.frequent;
         if(frequentList.length == 0) {
@@ -111,31 +113,20 @@ const Create = (options, json, emit) => {
         frequentResults.classList.add('EmojiPanel-frequent');
 
         frequentList.forEach(emoji => {
-            frequentResults.appendChild(Emojis.createButton(emoji, options));
+            frequentResults.appendChild(Emojis.createButton(emoji, options, emit));
         });
         results.appendChild(frequentResults);
     }
 
-    Object.keys(json).forEach(i => {
-        const category = json[i];
-
-        // Don't show the Modifier category
-        if(category.name == 'modifier') {
-            return;
-        }
-
-        const title = document.createElement('p');
-        title.classList.add('EmojiPanel__category');
-
-        let categoryName = category.name.replace(/_/g, ' ')
-            .replace(/\w\S*/g, (name) => name.charAt(0).toUpperCase() + name.substr(1).toLowerCase())
-            .replace('And', '&amp;');
-
-        title.innerHTML = categoryName;
-        results.appendChild(title);
-
-        category.emojis.forEach(emoji => results.appendChild(Emojis.createButton(emoji, options)));
-    });
+    const loadingTitle = document.createElement('p');
+    loadingTitle.classList.add('EmojiPanel__category');
+    loadingTitle.textContent = options.locale.loading;
+    results.appendChild(loadingTitle);
+    for(let i = 0; i < 9 * 8; i++) {
+        const tempEmoji = document.createElement('button');
+        tempEmoji.classList.add('temp');
+        results.appendChild(tempEmoji);
+    }
 
     const footer = document.createElement('footer');
     footer.classList.add('EmojiPanel__footer');
@@ -148,64 +139,6 @@ const Create = (options, json, emit) => {
         brand.textContent = options.locale.brand;
         footer.appendChild(brand);
     }
-
-    // Create the fitzpatrick modifier button
-    const hand = { // ✋
-        unicode: '270b' + modifiers[options.fitzpatrick].unicode,
-        char: '✋'
-    };
-    const modifierToggle = document.createElement('button');
-    modifierToggle.setAttribute('type', 'button');
-    modifierToggle.classList.add('EmojiPanel__btnModifier', 'EmojiPanel__btnModifierToggle', 'emoji');
-    modifierToggle.innerHTML = Emojis.createEl(hand, options);
-    footer.appendChild(modifierToggle);
-
-    const modifierDropdown = document.createElement('div');
-    modifierDropdown.classList.add('EmojiPanel__modifierDropdown');
-    Object.keys(modifiers).forEach(m => {
-        const modifier = modifiers[m];
-        modifier.unicode = '270b' + modifier.unicode;
-        modifier.char = '✋' + modifier.char;
-        const modifierBtn = document.createElement('button');
-        modifierBtn.setAttribute('type', 'button');
-        modifierBtn.classList.add('EmojiPanel__btnModifier');
-        modifierBtn.dataset.modifier = m;
-        modifierBtn.innerHTML = Emojis.createEl(modifier, options);
-
-        modifierBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            e.preventDefault();
-
-            const toggles = [].forEach.call(options.container.querySelectorAll('.EmojiPanel__btnModifierToggle'), toggle => {
-                toggle.innerHTML = Emojis.createEl(modifier, options);
-            });
-
-            options.fitzpatrick = e.target.dataset.modifier;
-            modifierDropdown.classList.remove('active');
-            // Storage.save(options);
-
-            // Refresh every emoji in any list with new skin tone
-            const emojis = [].forEach.call(options.container.querySelectorAll('.EmojiPanel__results .emoji'), emoji => {
-                if(emoji.dataset.fitzpatrick) {
-                    const emojiObj = {
-                        unicode: emoji.dataset.unicode,
-                        char: emoji.dataset.char,
-                        fitzpatrick: true,
-                        category: emoji.dataset.category,
-                        name: emoji.dataset.name
-                    }
-                    emoji.parentNode.replaceChild(Emojis.createButton(emojiObj), emoji);
-                }
-            });
-        });
-
-        modifierDropdown.appendChild(modifierBtn);
-    });
-    footer.appendChild(modifierDropdown);
-
-    modifierToggle.addEventListener('click', function() {
-        modifierDropdown.classList.toggle('active');
-    });
 
     // Append the dropdown menu to the container
     options.container.appendChild(panel);
@@ -237,6 +170,9 @@ const Create = (options, json, emit) => {
             targetAttachment
         });
     }
+
+    // Return the panel element so we can update it later
+    return panel;
 };
 
 const getCaretPosition = el => {

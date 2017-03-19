@@ -12,8 +12,8 @@ const categoryIcons = {
         char: '💡'
     },
     activity: {
-        unicode: '26bd',
-        char: '⚽️'
+        unicode: '1f3c8',
+        char: '🏈'
     },
     nature: {
         unicode: '1f33f',

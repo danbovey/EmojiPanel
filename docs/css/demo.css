@@ -36,6 +36,26 @@ header nav a:last-child:after {
     vertical-align: text-bottom;
 }
 
+.giant-emoji {
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    bottom: -50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    height: 50%;
+    font-size: 100px;
+    transition: all 0.1s ease-in-out;
+}
+.giant-emoji.active {
+    opacity: 1;
+    transform: translate(-50%, -150%);
+}
+
+h1 {
+    margin-top: 40px;
+}
 h1, h3 {
     font-weight: 500;
 }
@@ -59,7 +79,7 @@ table tr td, table tr th {
     border: 1px solid #DDD;
 }
 ul {
-    max-width: 440px;
+    max-width: 400px;
     padding: 0;
     list-style: none;
     text-align: left;
@@ -78,6 +98,12 @@ code {
     text-align: center;
     line-height: 1em;
     color: #777;
+}
+code.full {
+    display: block;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
 }
 
 .home section {

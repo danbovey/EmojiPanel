@@ -50,4 +50,13 @@
             border-color: #F1F1F1;
         }
     }
+    .temp {
+        flex: initial;
+        width: 20px;
+        min-width: initial;
+        height: 20px;
+        margin: 5px;
+        border-radius: $EmojiPanel-border-radius;
+        background: #EEE;
+    }
 }

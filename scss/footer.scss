@@ -21,9 +21,18 @@
 
     &__btnModifierToggle {
         font-size: 24px;
+
+        &.active {
+            display: none;
+        }
     }
 
     &__modifierDropdown {
         display: none;
+        height: $EmojiPanel-emoji-width;
+
+        &.active {
+            display: block;
+        }
     }
 }

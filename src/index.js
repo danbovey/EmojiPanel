@@ -2,6 +2,7 @@ const { EventEmitter } = require('fbemitter');
 
 const Create = require('./create');
 const Emojis = require('./emojis');
+const List = require('./list');
 
 const defaults = {
     search: true,
@@ -17,11 +18,12 @@ const defaults = {
 
     locale: {
         add: 'Add emoji',
-        search: 'Search',
-        search_results: 'Search results',
-        no_results: 'No results',
+        brand: 'EmojiPanel',
         frequent: 'Frequently used',
-        brand: 'EmojiPanel'
+        loading: 'Loading...',
+        no_results: 'No results',
+        search: 'Search',
+        search_results: 'Search results'
     },
     icons: {
         search: '<span class="fa fa-search"></span>'
@@ -41,9 +43,11 @@ export default class EmojiPanel extends EventEmitter {
             }
         });
 
+        const panel = Create(this.options, this.emit.bind(this));
+
         Emojis.load(this.options)
             .then(res => {
-                Create(this.options, res[1], this.emit.bind(this))
+                List(this.options, panel, res[1], this.emit.bind(this));
             });
     }
 }
