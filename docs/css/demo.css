@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #F7F7F7;
+    font-family: sans-serif;
+    font-weight: 100;
+    text-align: center;
+    line-height: 1.7em;
+    color: #555;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+nav {
+    margin-bottom: 20px;
+}
+header nav a:after {
+    margin: 0 1em;
+    color: #AAA;
+    content: '|';
+}
+header nav a:last-child:after {
+    margin: 0;
+    content: '';
+}
+
+.inline-emoji {
+    width: 20px;
+    height: 20px;
+    vertical-align: text-bottom;
+}
+
+h1, h3 {
+    font-weight: 500;
+}
+h3, main nav {
+    margin-top: 50px;
+}
+main nav a {
+    display: block;
+    margin-bottom: 20px;
+}
+
+table, ul {
+    margin: 0 auto;
+}
+table {
+    max-width: 700px;
+    border-collapse: collapse;
+}
+table tr td, table tr th {
+    padding: 5px 10px;
+    border: 1px solid #DDD;
+}
+ul {
+    max-width: 440px;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+    line-height: 2.5;
+}
+ul .inline-emoji {
+    margin-right: 20px;
+}
+
+code {
+    display: inline-block;
+    padding: 4px 8px;
+    border: 1px solid #DDD;
+    border-radius: 6px;
+    background: #F5F5F5;
+    text-align: center;
+    line-height: 1em;
+    color: #777;
+}
+
+.home section {
+    margin: 50px 0;
+}
+
+.input {
+    padding: 5px 14px;
+    border: 1px solid #EEE;
+    outline: none;
+    font-size: 14px;
+}
+.btn-trigger {
+    padding: 7px 13px;
+    border: none;
+    outline: none;
+    background: #EBF3FA;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.demo-centerpanel .EmojiPanel {
+    margin: 0 auto;
+}
+
+.github-corner:hover .octo-arm{
+    animation: octocat-wave 560ms ease-in-out;
+}
+@keyframes octocat-wave{
+    0%, 100% {
+        transform: rotate(0);
+    }
+    20%, 60% {
+        transform: rotate(-25deg);
+    }
+    40%, 80% {
+        transform: rotate(10deg);
+    }
+}
+@media(max-width: 500px) {
+    .github-corner:hover .octo-arm{
+        animation: none;
+    }
+    .github-corner .octo-arm{
+        animation: octocat-wave 560ms ease-in-out;
+    }
+}
