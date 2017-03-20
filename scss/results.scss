@@ -3,6 +3,10 @@
         overflow-y: auto;
         height: 300px;
         padding: 0 $EmojiPanel-padding-results $EmojiPanel-padding-results;
+
+        .emoji {
+            background: #FFF;
+        }
     }
 
     &__noResults {
@@ -18,9 +22,5 @@
         padding: 0 0 5px;
         border-bottom: 1px solid $EmojiPanel-border-input;
         color: $EmojiPanel-category-title;
-    }
-
-    .emoji {
-        background: #FFF;
     }
 }
