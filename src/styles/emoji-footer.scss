@@ -1,0 +1,12 @@
+@import '_constants';
+
+.emoji-footer {
+  display: flex;
+  min-height: $EmojiPanel-emoji-width;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid $EmojiPanel-border-header;
+  border-radius: 0 0 $EmojiPanel-border-radius $EmojiPanel-border-radius;
+  padding: $EmojiPanel-padding-results;
+  background: $EmojiPanel-background-header;
+}

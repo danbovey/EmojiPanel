@@ -1,13 +1,6 @@
-![EmojiPanel Logo](http://i.imgur.com/Os8izFU.png)
-# EmojiPanel
+# Emoji picker for Angular
 
-> A customisable Javascript emoji picker
+This project was forked from the [EmojiPanel](https://github.com/danbovey/EmojiPanel) project created by [DanBovey](https://github.com/danbovey)
 
-EmojiPanel is a Javascript emoji picker that used to be a popular Chrome extension for Twitter! View the examples on our project page: [emojipanel.js.org](https://emojipanel.js.org).
+It's pretty basic right now, not very customizable but propagates necessary emoji selection events and comes with basic search and category selection functionalities.
 
-![Preview](http://i.imgur.com/AvbH2ds.png)
-
-- ✏️ Select and write emoji using any sprite sheet
-- 📊 Keeps track of users frequently used emojis
-- 🎛 A lot of options & customisable SCSS styles
-- 📡 Listen for events such as `select` or `search`

@@ -1,0 +1,16 @@
+@import '_constants';
+
+input {
+  width: 100%;
+  padding: 5px 14px;
+  border: 1px solid $EmojiPanel-border-input;
+  border-radius: 30px;
+  outline: none;
+  font-size: 14px;
+  font-weight: inherit;
+  box-sizing: border-box;
+
+  &:focus {
+      border-color: darken($EmojiPanel-border-input, 10%);
+  }
+}

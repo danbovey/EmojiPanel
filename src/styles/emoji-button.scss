@@ -1,0 +1,27 @@
+@import '_constants.scss';
+
+:host {
+  display: inline-block;
+}
+
+.emoji-button {
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  width: $EmojiPanel-emoji-width;
+  height: $EmojiPanel-emoji-width;
+  border: 5px solid transparent;
+  border-radius: $EmojiPanel-border-radius;
+  font-size: ($EmojiPanel-emoji-width - 10px);
+  line-height: 1.1;
+  cursor: pointer;
+  transition: all 0.2s;
+  overflow: hidden;
+
+  &:hover, &:focus {
+      background: #F1F1F1;
+      border-color: #F1F1F1;
+  }
+}

@@ -1,0 +1,9 @@
+@import '_constants';
+
+:host {
+  display: block;
+  border-bottom: 1px solid $EmojiPanel-border-header;
+  border-radius: $EmojiPanel-border-radius $EmojiPanel-border-radius 0 0;
+  padding: $EmojiPanel-padding-results;
+  background: $EmojiPanel-background-header;
+}

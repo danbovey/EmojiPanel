@@ -1,0 +1,8 @@
+@import '_constants';
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 0 0 10px;
+}

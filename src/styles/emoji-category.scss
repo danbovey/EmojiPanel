@@ -1,0 +1,9 @@
+@import '_constants';
+
+.emoji-category {
+    margin: 15px 0 5px;
+    padding: 0 0 5px;
+    border-bottom: 1px solid $EmojiPanel-border-input;
+    color: $EmojiPanel-category-title;
+    font-family: $EmojiPanel-font-family;
+}
