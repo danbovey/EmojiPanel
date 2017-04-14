@@ -8,7 +8,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "ng build -sm -ec -bh lsharir.github.io && gh-pages -d dist"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +30,7 @@
     "@angular/compiler-cli": "^4.0.0",
     "@types/node": "~6.0.60",
     "codelyzer": "~2.0.0",
+    "gh-pages": "^0.12.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typescript": "~2.2.0"

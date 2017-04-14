@@ -4,6 +4,8 @@ This project was forked from the [EmojiPanel](https://github.com/danbovey/EmojiP
 
 It's pretty basic right now, not very customizable but propagates necessary emoji selection events and comes with basic search and category selection functionalities.
 
+[Demo](https://lsharir.github.io/angular2-emoji-picker/)
+
 
 Usage:
 
