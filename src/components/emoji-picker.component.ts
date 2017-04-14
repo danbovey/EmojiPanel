@@ -3,7 +3,7 @@ import { EmojiContentComponent } from './';
 
 @Component({
   selector: 'emoji-picker',
-  styles: [':host { position: absolute; }'],
+  styles: [':host { position: absolute; z-index: 9999; }'],
   template: `
   <emoji-content (emoji-selection)="selectionEmitter.emit($event)"></emoji-content>
   `,
