@@ -8,10 +8,12 @@ import { EmojiCategoryComponent } from './';
   <div class="emoji-list">
     <ng-container *ngFor="let emojiCategory of emojis | notEmptyEmojiCategory">
       <emoji-category [category]="emojiCategory"></emoji-category>
-      <emoji-button 
+      <div class="emoji-buttons">
+        <emoji-button 
         *ngFor="let emoji of emojiCategory.emojis"
         (selection)="emojiSelectionEmitter.emit($event)"
         [emoji]="emoji"></emoji-button>
+      </div>
     </ng-container>
   </div>
   `

@@ -7,7 +7,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 <button
   class="emoji-button" 
   (click)="selectionEmitter.emit(dataToEmit || emoji)">
-  {{emoji.char}}
+  {{emoji[0]}}
 </button>
   `
 })

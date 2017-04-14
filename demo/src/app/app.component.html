@@ -1,5 +1,21 @@
-<h1>
-  {{title}}
-</h1>
+<header>
+  <h1>Angular Emoji Picker</h1>
+</header>
 
-<emoji-picker (emoji-select)="handleEmojiSelection($event)"></emoji-picker>
+<code><pre>
+  [(emojiPickerIf)]="{{toggled}}"
+  (emojiPickerSelect)="handleSelection($event{{' = ' + eventMock}})"
+</pre></code>
+
+<div class="main">
+  <i
+    class="emoji-toggle-button"
+    (click)="toggled = !toggled"
+    emojiPickerAnchor
+    [(emojiPickerIf)]="toggled"
+    (emojiPickerSelect)="handleSelection($event)">😄</i>
+</div>
+
+<footer>
+
+</footer>

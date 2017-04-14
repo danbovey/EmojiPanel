@@ -1,25 +1,60 @@
-import { Component, ViewChild, Input, EventEmitter, Output } from '@angular/core';
+import { Component, ViewChild, Input, EventEmitter, Output, ElementRef, Renderer } from '@angular/core';
 import { EmojiContentComponent } from './';
 
 @Component({
   selector: 'emoji-picker',
+  styles: [':host { position: absolute; }'],
   template: `
-  <emoji-content *ngIf="toggled" (emoji-selection)="handleEmojiSelection($event)"></emoji-content>
-  <button (click)="toggled = !toggled">toggled : {{toggled}}</button>
-  `
+  <emoji-content (emoji-selection)="selectionEmitter.emit($event)"></emoji-content>
+  `,
+  host: {
+    '(document:mousedown)': 'onBackground($event)',
+    '(mousedown)': '_lastHostMousedownEvent = $event'
+  }
 })
 
 export class EmojiPickerComponent {
-  toggled: boolean = false;
-
   @Output('emoji-select') selectionEmitter = new EventEmitter();
+  @Output('picker-close') pickerCloseEmitter = new EventEmitter(); 
 
-  constructor() { }
+  private _lastHostMousedownEvent;
 
-  ngOnInit() {
+  constructor(private _renderer: Renderer, private _el: ElementRef) { }
+
+  setPosition(target: ElementRef) {
+    this._renderer.setElementStyle(this._el.nativeElement, 'transform', '');
+
+    const targetBorders = target.nativeElement.getBoundingClientRect(),
+      thisBorders = this._el.nativeElement.getBoundingClientRect();
+
+    let heightCorrection = targetBorders.bottom - thisBorders.top,
+      widthCorrection = targetBorders.left + targetBorders.width / 2 - thisBorders.left - thisBorders.width / 2;
+
+    if (thisBorders.bottom + heightCorrection > window.innerHeight) {
+      heightCorrection += window.innerHeight - (thisBorders.bottom + heightCorrection);
+    }
+
+    if (thisBorders.top + heightCorrection < 0) {
+      heightCorrection -= (thisBorders.top + heightCorrection);
+    }
+
+    if (thisBorders.right + widthCorrection > window.innerWidth) {
+      widthCorrection += window.innerWidth - (thisBorders.right + widthCorrection);
+    }
+
+    if (thisBorders.left + widthCorrection < 0) {
+      widthCorrection -= (thisBorders.left + widthCorrection);
+    }
+    
+    this._renderer.setElementStyle(this._el.nativeElement, 'transform', `translate(${widthCorrection}px,${heightCorrection}px)`);
   }
 
-  handleEmojiSelection(emoji) {
-    console.log(emoji);
+  onBackground(event) {
+    /** internal mousedowns are ignored */
+    if (event === this._lastHostMousedownEvent || event.emojiPickerExempt) {
+      return;
+    }
+
+    this.pickerCloseEmitter.emit(event);
   }
 }

@@ -5,3 +5,9 @@
   height: 300px;
   padding: 0 $EmojiPanel-padding-results $EmojiPanel-padding-results;
 }
+
+.emoji-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}

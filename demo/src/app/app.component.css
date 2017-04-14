@@ -1,0 +1,16 @@
+.emoji-toggle-button {
+  font-style: normal;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 3rem;
+  user-select: none;
+}
+
+.main {
+  text-align: center;
+}
+
+header {
+  text-align: center;
+  font-family: 'Arial', 'Arial Black', 'Tahoma', 'Trebuchet MS', 'Verdana';
+}

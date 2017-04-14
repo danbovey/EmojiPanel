@@ -6,13 +6,11 @@ import { Component, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  public eventMock;
+  public toggled;
 
-  title = 'app works!';
-
-  ngOnInit() {
-  }
-
-  handleEmojiSelection(e) {
+  handleSelection(e) {
+    this.eventMock = JSON.stringify(e);
     console.log(e);
   }
 }

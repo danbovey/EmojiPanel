@@ -1,5 +1,5 @@
 import { Component, ViewChild, forwardRef, Output, EventEmitter } from '@angular/core';
-import { emojisJson } from "../emojisJson";
+import { EMOJIS } from "../emojis.data";
 import { EmojiListComponent } from "./";
 
 @Component({
@@ -19,7 +19,7 @@ export class EmojiContentComponent {
   @ViewChild(forwardRef(() => EmojiListComponent)) emojiListComponent: EmojiListComponent;
   @Output('emoji-selection') emojiSelectionEmitter = new EventEmitter<any>();
 
-  private _emojis = emojisJson;
+  private _emojis = EMOJIS;
   emojis = this._emojis.slice();
   emojisCategories = this._emojis.map(category => Object.assign({}, category, { emojis : [] }));
 
@@ -30,16 +30,11 @@ export class EmojiContentComponent {
     
     value = value.replace(/-/g, '').toLowerCase();
 
-    const matched = [];
     Object.keys(this._emojis).forEach(i => {
       const category = this._emojis[i];
 
       category.emojis.forEach(emoji => {
-        const keywordMatch = emoji.keywords.find(keyword => {
-          keyword = keyword.replace(/-/g, '').toLowerCase();
-          return keyword.indexOf(value) > -1;
-        });
-        if (keywordMatch) {
+        if (emoji[1].indexOf(value) !== -1) {
           filteredEmojis[i].emojis.push(emoji);
         }
       });

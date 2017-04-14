@@ -1,4 +1,4 @@
-$EmojiPanel-font-family: 'system-ui';
+$EmojiPanel-font-family: 'Arial', 'Arial Black', 'Tahoma', 'Trebuchet MS', 'Verdana';
 
 // Colors
 $EmojiPanel-background-header: #FCFCFC !default;
@@ -12,5 +12,5 @@ $EmojiPanel-padding-results: 10px !default;
 $EmojiPanel-border-radius: 3px !default;
 
 // Dimensions
-$EmojiPanel-emoji-width: 30px !default;
-$EmojiPanel-width: $EmojiPanel-emoji-width * 9 + ($EmojiPanel-padding-results * 2);
+$EmojiPanel-emoji-width: 34px !default;
+$EmojiPanel-width: $EmojiPanel-emoji-width * 7 + ($EmojiPanel-padding-results * 2);
