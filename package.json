@@ -2,7 +2,10 @@
   "name": "angular2-emoji-picker",
   "version": "1.0.0",
   "description": "Emoji picker for angular2+",
-  "url": "https://lsharir.github.io/angular2-emoji-picker/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lsharir/angular2-emoji-picker.git"
+  },
   "author": "Liran Sharir <lsharir@gmail.com>",
   "main": "./lib-dist/index.js",
   "types": "./lib-dist/index.d.ts",
@@ -22,17 +25,19 @@
     "angular-library-builder": "^1.4.2"
   },
   "dependencies": {
-    "@angular/common": "4.0.2",
-    "@angular/compiler": "4.0.2",
-    "@angular/compiler-cli": "4.0.2",
-    "@angular/core": "4.0.2",
-    "@angular/forms": "4.0.2",
-    "@angular/http": "4.0.2",
-    "@angular/platform-browser": "4.0.2",
-    "@angular/platform-browser-dynamic": "4.0.2",
-    "@angular/router": "4.0.2",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.3.0",
-    "zone.js": "^0.8.5"
+    "@angular/common": ">=2.4.0",
+    "@angular/compiler": ">=2.4.0",
+    "@angular/core": ">=2.4.0",
+    "core-js": ">=2.4.1",
+    "rxjs": ">=5.1.0",
+    "zone.js": ">=0.7.6"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=2.4.0",
+    "@angular/compiler": ">=2.4.0",
+    "@angular/core": ">=2.4.0",
+    "core-js": ">=2.4.1",
+    "rxjs": ">=5.1.0",
+    "zone.js": ">=0.7.6"
   }
 }
