@@ -1,18 +1,41 @@
 import { Directive, Output, EventEmitter, ElementRef } from '@angular/core';
+import { Subject } from "rxjs/Subject";
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Directive({ 
   selector: '[emojiPickerPositionEmitter]',
   host: {
     '(keyup)': 'updateCaretPosition()',
     '(mouseup)': 'updateCaretPosition()',
-    '(focus)': 'updateCaretPosition()'
+    '(focus)': 'updateCaretPosition()',
+    '(DOMSubtreeModified)': 'updateCaretPosition($event)'
   }
 })
 export class EmojiPickerPositionDirective {
   @Output('emojiPickerPositionEmitter') positionEmitter = new EventEmitter();
 
+  private _position = new Subject<{ caretOffset, caretRange }>();
+  private _destroyed = new Subject<boolean>();
+
   private _win;
   private _doc;
+
+  get doc() {
+    if (!this._doc) {
+      this._doc = this._el.nativeElement.ownerDocument || this._el.nativeElement.document || document;
+    }
+
+    return this._doc;
+  }
+
+  get win() {
+    if (!this._win) {
+      this._win = this.doc.defaultView || this.doc.parentWindow || window
+    }
+
+    return this._win
+  }
 
   constructor(private _el: ElementRef) { }
 
@@ -21,13 +44,44 @@ export class EmojiPickerPositionDirective {
       throw new Error('(emojiPickerPositionEmitter) should only work on contenteditable enabled or input elements');
     }
 
-    this._doc = this._el.nativeElement.ownerDocument || this._el.nativeElement.document;
-    this._win = this._doc.defaultView || this._doc.parentWindow;
+    this._position
+      .takeUntil(this._destroyed)
+      .distinctUntilChanged((event1, event2) => {
+        if (
+          /** if range suddenly exists or disappears */
+          !event1.caretRange && event2.caretRange || 
+          event1.caretRange && !event2.caretRange ||
+          /** if caret offset has changed */
+          event1.caretOffset !== event2.caretOffset ||
+          /** if caret range has changed in these properties */
+          !this.compareRangeObject(event1.caretRange, event2.caretRange)
+        ) {
+          return false;
+        }
+
+        return true;
+      })
+      .subscribe(event => this.positionEmitter.emit(event))
+    ;
+  }
+
+  compareRangeObject(r1, r2) {
+    for (let k in r1) {
+      if (r1[k] !== r2[k]) {
+        return false
+      }
+    }
+
+    return true;
+  }
+
+  ngOnDestroy() {
+    this._destroyed.next(true);
   }
 
   updateCaretPosition() {
-    const position = this.getCaretCharacterOffsetWithin(this._win, this._doc, this._el.nativeElement);
-    this.positionEmitter.emit(position);
+    const position = this.getCaretCharacterOffsetWithin(this.win, this.doc, this._el.nativeElement);
+    this._position.next(position);
   }
 
   getCaretCharacterOffsetWithin(win, doc, element) {
