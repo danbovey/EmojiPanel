@@ -31,7 +31,7 @@ export class EmojiPickerPositionDirective {
   }
 
   getCaretCharacterOffsetWithin(win, doc, element) {
-    let caretOffset = 0, sel;
+    let caretOffset = 0, sel, caretRange;
 
     if (typeof win.getSelection != "undefined") {
       sel = win.getSelection();
@@ -41,6 +41,9 @@ export class EmojiPickerPositionDirective {
         preCaretRange.selectNodeContents(element);
         preCaretRange.setEnd(range.endContainer, range.endOffset);
         caretOffset = preCaretRange.toString().length;
+
+        /** Keeping a reference of the range to emit */
+        caretRange = range.cloneRange();
       }
     } else if ((sel = doc.selection) && sel.type != "Control") {
       const textRange = sel.createRange();
@@ -48,7 +51,19 @@ export class EmojiPickerPositionDirective {
       preCaretTextRange.moveToElementText(element);
       preCaretTextRange.setEndPoint("EndToEnd", textRange);
       caretOffset = preCaretTextRange.text.length;
+
+      /** Keeping a reference of the range to emit and making it compatible */
+      caretRange = textRange.duplicate();
+      caretRange.insertNode = (e) => {
+        const container = document.createElement("div");
+        container.appendChild(e);
+        caretRange.pasteHTML(container.innerHTML);
+      };
     }
-    return caretOffset;
+
+    return {
+      caretOffset,
+      caretRange
+    };
   }
 }

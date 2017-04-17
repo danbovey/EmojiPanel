@@ -12,11 +12,11 @@ export class AppComponent {
 
   handleSelection(e) {
     this.eventMock = JSON.stringify(e);
-    console.log('Emoji event: ' + e);
+    console.log('Emoji event: ' + this.eventMock);
   }
 
   handleCurrentPosition(e) {
-    this.eventPosMock = e;
-    console.log('Caret position: ' + e);
+    this.eventPosMock = `{ caretOffset : ${e.caretOffset}, caretRange: Range{...} }`;
+    console.log('Caret position: ' + this.eventPosMock);
   }
 }

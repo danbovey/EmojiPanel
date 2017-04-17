@@ -12,9 +12,10 @@
   padding: 0.5rem 0.25rem;
 }
 
-pre {
+pre.code-pre {
   background: #1d1f20;
   color: #fff;
+  white-space: pre-wrap;
   padding: 2rem 1rem;
 }
 
