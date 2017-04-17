@@ -3,11 +3,18 @@
 </header>
 
 <code><pre>
+  contenteditable:
+  (emojiPickerPositionEmitter)="handleCurrentPosition($event{{' = ' + eventPosMock}})"
+
+  😄:
   [(emojiPickerIf)]="{{toggled}}"
   (emojiPickerSelect)="handleSelection($event{{' = ' + eventMock}})"
 </pre></code>
 
 <div class="main">
+  <div class="emoji-content-editable"
+    (emojiPickerPositionEmitter)="handleCurrentPosition($event)"
+    contenteditable="true">This is a contenteditable</div>
   <i
     class="emoji-toggle-button"
     (click)="toggled = !toggled"

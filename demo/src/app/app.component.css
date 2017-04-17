@@ -6,6 +6,18 @@
   user-select: none;
 }
 
+.emoji-content-editable {
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 0.5rem 0.25rem;
+}
+
+pre {
+  background: #1d1f20;
+  color: #fff;
+  padding: 2rem 1rem;
+}
+
 .main {
   text-align: center;
 }
