@@ -2,8 +2,8 @@
 
 :host {
   display: block;
-  border-bottom: 1px solid $EmojiPanel-border-header;
-  border-radius: $EmojiPanel-border-radius $EmojiPanel-border-radius 0 0;
-  padding: $EmojiPanel-padding-results;
-  background: $EmojiPanel-background-header;
+  border-bottom: 1px solid $ep-border-header;
+  border-radius: $ep-border-radius $ep-border-radius 0 0;
+  padding: $ep-padding-results;
+  background: $ep-background-header;
 }

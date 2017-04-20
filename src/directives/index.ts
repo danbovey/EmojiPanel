@@ -1,12 +1,12 @@
-export * from './emoji-picker-position.directive';
-export * from './emoji-picker-anchor.directive';
+export * from './emoji-picker-caret.directive';
+export * from './emoji-picker-api.directive';
 
 import {
-  EmojiPickerAnchorDirective,
-  EmojiPickerPositionDirective
+  EmojiPickerApiDirective,
+  EmojiPickerCaretDirective
 } from './';
 
 export const DIRECTIVES = [
-  EmojiPickerAnchorDirective,
-  EmojiPickerPositionDirective
+  EmojiPickerApiDirective,
+  EmojiPickerCaretDirective
 ];

@@ -1,14 +1,20 @@
 @import '_constants';
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100vw;
-  border-radius: $EmojiPanel-border-radius;
-  background: $EmojiPanel-background-panel;
+  height: $ep-height;
+  border-radius: $ep-border-radius;
+  background: $ep-background-panel;
   text-align: left;
   box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
 
-  @media(min-width: $EmojiPanel-width) {
-      width: $EmojiPanel-width;
+  @media(min-width: $ep-width) {
+      width: $ep-width;
   }
+}
+
+emoji-list {
+  flex-grow: 1;
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild, forwardRef, Output, EventEmitter } from '@angular/core';
-import { EMOJIS } from "../emojis.data";
+import { EMOJIS } from "../lib/emojis.data";
 import { EmojiListComponent } from "./";
 
 @Component({

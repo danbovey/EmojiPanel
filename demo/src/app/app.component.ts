@@ -8,6 +8,7 @@ import { Component, ViewChild } from '@angular/core';
 export class AppComponent {
   public eventMock;
   public eventPosMock;
+  public direction = Math.random() > 0.5 ? (Math.random() > 0.5 ? 'top' : 'bottom') : (Math.random() > 0.5 ? 'right' : 'left');
   public toggled;
 
   handleSelection(e) {
@@ -15,7 +16,7 @@ export class AppComponent {
     console.log('Emoji event: ' + this.eventMock);
   }
 
-  handleCurrentPosition(e) {
+  handleCurrentCaret(e) {
     this.eventPosMock = `{ caretOffset : ${e.caretOffset}, caretRange: Range{...} }`;
     console.log('Caret position: ' + this.eventPosMock);
   }

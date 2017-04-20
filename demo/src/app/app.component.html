@@ -4,22 +4,23 @@
 
 <code><pre class="code-pre">
   contenteditable:
-  (emojiPickerPositionEmitter)="handleCurrentPosition($event{{' = ' + eventPosMock}})"
+  (emojiPickerCaretEmitter)="handleCurrentCaret($event{{' = ' + eventPosMock}})"
 
   😄:
   [(emojiPickerIf)]="{{toggled}}"
+  [emojiPickerDirection]="<input class="code-input" [style.width.px]="direction.length * 7.5" type="text" [(ngModel)]="direction"/>"
   (emojiPickerSelect)="handleSelection($event{{' = ' + eventMock}})"
 </pre></code>
 
 <div class="main">
   <div class="emoji-content-editable"
-    (emojiPickerPositionEmitter)="handleCurrentPosition($event)"
+    (emojiPickerCaretEmitter)="handleCurrentCaret($event)"
     contenteditable="true">This is a contenteditable</div>
   <i
     class="emoji-toggle-button"
     (click)="toggled = !toggled"
-    emojiPickerAnchor
     [(emojiPickerIf)]="toggled"
+    [emojiPickerDirection]="direction"
     (emojiPickerSelect)="handleSelection($event)">😄</i>
 </div>
 

@@ -1,13 +1,16 @@
 @import '_constants';
 
-.emoji-list {
+:host {
   overflow-y: auto;
-  height: 300px;
-  padding: 0 $EmojiPanel-padding-results $EmojiPanel-padding-results;
+}
+
+.emoji-list {
+  padding: 0 $ep-padding-results $ep-padding-results;
 }
 
 .emoji-buttons {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  margin: $ep-margin/2 0;
 }

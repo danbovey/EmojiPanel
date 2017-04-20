@@ -4,7 +4,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/distinctUntilChanged';
 
 @Directive({ 
-  selector: '[emojiPickerPositionEmitter]',
+  selector: '[emojiPickerCaretEmitter]',
   host: {
     '(keyup)': 'updateCaretPosition()',
     '(mouseup)': 'updateCaretPosition()',
@@ -12,8 +12,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
     '(DOMSubtreeModified)': 'updateCaretPosition($event)'
   }
 })
-export class EmojiPickerPositionDirective {
-  @Output('emojiPickerPositionEmitter') positionEmitter = new EventEmitter();
+export class EmojiPickerCaretDirective {
+  @Output('emojiPickerCaretEmitter') caretEmitter = new EventEmitter();
 
   private _position = new Subject<{ caretOffset, caretRange }>();
   private _destroyed = new Subject<boolean>();
@@ -61,7 +61,7 @@ export class EmojiPickerPositionDirective {
 
         return true;
       })
-      .subscribe(event => this.positionEmitter.emit(event))
+      .subscribe(event => this.caretEmitter.emit(event))
     ;
   }
 

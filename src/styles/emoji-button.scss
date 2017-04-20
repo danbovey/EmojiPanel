@@ -10,11 +10,11 @@
   outline: none;
   background: none;
   cursor: pointer;
-  width: $EmojiPanel-emoji-width;
-  height: $EmojiPanel-emoji-width;
+  width: $ep-emoji-width;
+  height: $ep-emoji-width;
   border: 5px solid transparent;
-  border-radius: $EmojiPanel-border-radius;
-  font-size: ($EmojiPanel-emoji-width - 10px);
+  border-radius: $ep-border-radius;
+  font-size: ($ep-emoji-width - 10px);
   line-height: 1.1;
   cursor: pointer;
   transition: all 0.2s;
