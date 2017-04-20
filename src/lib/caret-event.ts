@@ -13,7 +13,7 @@ export class CaretEvent {
     }));
   }
 
-  static get null() {
+  static generateNullEvent() {
     return new CaretEvent({
       caretOffset: 0,
       textContent: ''

@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/angular2-emoji-picker.svg)](https://badge.fury.io/js/angular2-emoji-picker)
+
 # Emoji picker for Angular
 
 This project was forked from the [EmojiPanel](https://github.com/danbovey/EmojiPanel) project created by [DanBovey](https://github.com/danbovey)

@@ -21,7 +21,7 @@ export class EmojiPickerCaretDirective {
   private _caretEvent$ = new Subject<CaretEvent>();
   private _destroyed$ = new Subject<boolean>();
 
-  private _lastCaretEvent: CaretEvent = CaretEvent.null;
+  private _lastCaretEvent: CaretEvent = CaretEvent.generateNullEvent();
 
   private _win;
   private _doc;
