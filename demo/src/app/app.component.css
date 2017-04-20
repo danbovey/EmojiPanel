@@ -17,6 +17,7 @@ pre.code-pre {
   color: #fff;
   white-space: pre-wrap;
   padding: 2rem 1rem;
+  line-height: 1.5;
 }
 
 .code-pre .code-input {
@@ -27,6 +28,10 @@ pre.code-pre {
   border: none;
   text-align: center;
   font-size: 0.75rem;
+}
+
+.code-pre .code-special {
+  color: #88d2d0;
 }
 
 .main {

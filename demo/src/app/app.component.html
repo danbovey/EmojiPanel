@@ -1,21 +1,28 @@
+<code><pre class="code-pre"><![CDATA[
+  <div
+    contenteditable="true"
+    (emojiPickerCaretEmitter)="handleCurrentCaret(]]><span class="code-special">$event{{' = ' + eventPosMock}}</span><![CDATA[)">
+    {{content}}
+  </div>
+
+  <i
+    class="emoji-toggle-button"
+    (click)="toggled = !toggled"
+    [(emojiPickerIf)]="]]><span class="code-special">{{toggled}}</span><![CDATA["
+    [emojiPickerDirection]="']]><input class="code-input" [style.width.px]="direction.length * 7.5" type="text" [(ngModel)]="direction" /><![CDATA['"
+    (emojiPickerSelect)="handleSelection(]]><span class="code-special">$event{{' = ' + eventMock}}</span><![CDATA[)">😄</i>
+]]></pre></code>
+
 <header>
   <h1>Angular Emoji Picker</h1>
 </header>
 
-<code><pre class="code-pre">
-  contenteditable:
-  (emojiPickerCaretEmitter)="handleCurrentCaret($event{{' = ' + eventPosMock}})"
-
-  😄:
-  [(emojiPickerIf)]="{{toggled}}"
-  [emojiPickerDirection]="<input class="code-input" [style.width.px]="direction.length * 7.5" type="text" [(ngModel)]="direction"/>"
-  (emojiPickerSelect)="handleSelection($event{{' = ' + eventMock}})"
-</pre></code>
-
 <div class="main">
   <div class="emoji-content-editable"
     (emojiPickerCaretEmitter)="handleCurrentCaret($event)"
-    contenteditable="true">This is a contenteditable</div>
+    (input)="content = $event.target.textContent"
+    [textContent]="content"
+    contenteditable="true"></div>
   <i
     class="emoji-toggle-button"
     (click)="toggled = !toggled"

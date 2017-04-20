@@ -15,6 +15,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 
 import { EmojiPickerComponent } from './../components';
 import { DIRECTIONS } from '../lib/picker-directions';
+import { Subscription } from "rxjs/Subscription";
+import { EmojiEvent } from "../";
 
 @Directive({
   selector: '[emojiPickerIf]',
@@ -46,6 +48,7 @@ export class EmojiPickerApiDirective {
 
   private _emojiPickerFactory: ComponentFactory<EmojiPickerComponent>;
   private _emojiPickerRef: ComponentRef<EmojiPickerComponent>;
+  private _emojiSubs: Subscription[] = [];
 
   constructor(
     private _cfr: ComponentFactoryResolver,
@@ -69,8 +72,10 @@ export class EmojiPickerApiDirective {
     this._emojiPickerRef = this._emojiPickerRef || this._vcr.createComponent(this._emojiPickerFactory);
 
     this._emojiPickerRef.instance.setPosition(this._el, this._directionCode);
-    this._emojiPickerRef.instance.pickerCloseEmitter.subscribe(event => this.emojiPickerIfEmitter.emit(false));
-    this._emojiPickerRef.instance.selectionEmitter.subscribe(event => this.selectEmitter.emit(event));
+    this._emojiSubs.push(
+      this._emojiPickerRef.instance.pickerCloseEmitter.subscribe(event => this.emojiPickerIfEmitter.emit(false)),
+      this._emojiPickerRef.instance.selectionEmitter.subscribe(event => this.selectEmitter.emit(EmojiEvent.fromArray(event)))
+    );
   }
 
   closePicker() {
@@ -78,7 +83,10 @@ export class EmojiPickerApiDirective {
       return;
     }
 
+    this._emojiSubs.forEach((subscription: Subscription) => subscription.unsubscribe());
     this._emojiPickerRef.destroy();
+    
+    this._emojiSubs = [];
     delete this._emojiPickerRef;
   }
 

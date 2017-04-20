@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { CaretEvent, EmojiEvent } from "../../../src";
 
 @Component({
   selector: 'app-root',
@@ -8,16 +9,20 @@ import { Component, ViewChild } from '@angular/core';
 export class AppComponent {
   public eventMock;
   public eventPosMock;
-  public direction = Math.random() > 0.5 ? (Math.random() > 0.5 ? 'top' : 'bottom') : (Math.random() > 0.5 ? 'right' : 'left');
-  public toggled;
 
-  handleSelection(e) {
-    this.eventMock = JSON.stringify(e);
-    console.log('Emoji event: ' + this.eventMock);
+  public direction = Math.random() > 0.5 ? (Math.random() > 0.5 ? 'top' : 'bottom') : (Math.random() > 0.5 ? 'right' : 'left');
+  public toggled = false;
+  public content = 'Type letters, enter emojis, go nuts...';
+
+  private _lastCaretEvent: CaretEvent;
+
+  handleSelection(event: EmojiEvent) {
+    this.content = this.content.slice(0, this._lastCaretEvent.caretOffset) + event.char + this.content.slice(this._lastCaretEvent.caretOffset);
+    this.eventMock = JSON.stringify(event);
   }
 
-  handleCurrentCaret(e) {
-    this.eventPosMock = `{ caretOffset : ${e.caretOffset}, caretRange: Range{...} }`;
-    console.log('Caret position: ' + this.eventPosMock);
+  handleCurrentCaret(event: CaretEvent) {
+    this._lastCaretEvent = event;
+    this.eventPosMock = `{ caretOffset : ${event.caretOffset}, caretRange: Range{...}, textContent: ${event.textContent} }`;
   }
 }
