@@ -7,7 +7,7 @@ It's pretty basic right now, not very customizable but propagates necessary emoj
 [Demo](https://lsharir.github.io/angular2-emoji-picker/)
 
 
-Usage:
+###Usage:
 
 ```
 import { EmojiPickerModule } from 'angular-emoji-picker';
@@ -23,20 +23,26 @@ export class AppModule {}
 
 ```
 
-Directive API:
+###Directive API:
 
 ```
 <i
     (click)="toggled = !toggled"
-    emojiPickerAnchor
     [(emojiPickerIf)]="toggled"
+    [emojiPickerPosition]="'bottom' || 'top' || 'left' || 'right'"
     (emojiPickerSelect)="handleSelection($event)">😄</i>
 ```
 
-`(emojiPickerSelect)="handleSelection($event)"`
+### Emitter `(emojiPickerSelect)="handleSelection($event)"`
 
 ```
 $event = ["😌", "relieved"]
 ```
 
-Emoji Picker will get placed below the anchor, centered and within window borders
+### Emitter `(emojiPickerCaretEmitter)="handleCaretChange($event)"`
+
+```
+$event = { caretOffset: 13, caretRange: Range{...} }
+```
+
+Emoji Picker will get placed relative the element chosen via the directive api, centered and within window borders
