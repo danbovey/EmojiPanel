@@ -1,0 +1,11 @@
+@import '_constants';
+
+.emoji-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: $ep-border-size solid $ep-border-header;
+  border-radius: 0 0 $ep-border-radius $ep-border-radius;
+  padding: $ep-padding-results;
+  background: $ep-background-header;
+}

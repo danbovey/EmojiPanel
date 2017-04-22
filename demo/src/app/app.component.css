@@ -1,0 +1,44 @@
+.emoji-toggle-button {
+  font-style: normal;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 3rem;
+  user-select: none;
+}
+
+.emoji-content-editable {
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 0.5rem 0.25rem;
+}
+
+pre.code-pre {
+  background: #1d1f20;
+  color: #fff;
+  white-space: pre-wrap;
+  padding: 2rem 1rem;
+  line-height: 1.5;
+}
+
+.code-pre .code-input {
+  color: #f3ef9c;
+  font-family: monospace;
+  background: none;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.code-pre .code-special {
+  color: #88d2d0;
+}
+
+.main {
+  text-align: center;
+}
+
+header {
+  text-align: center;
+  font-family: 'Arial', 'Arial Black', 'Tahoma', 'Trebuchet MS', 'Verdana';
+}

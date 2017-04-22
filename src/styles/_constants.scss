@@ -1,0 +1,30 @@
+$ep-font-family: 'Arial', 'Arial Black', 'Tahoma', 'Trebuchet MS', 'Verdana';
+
+// Colors
+$ep-background-header: #FCFCFC !default;
+$ep-border-header: #F9F9F9 !default;
+$ep-background-panel: #FFF !default;
+$ep-border-input: #F0F0F0 !default;
+$ep-category-title: #777 !default;
+
+// Padding and Borders
+$ep-padding: 10px;
+$ep-margin: 10px;
+$ep-padding-results: $ep-padding !default;
+$ep-border-radius: 3px !default;
+
+// Dimensions
+$ep-emoji-width: 34px !default;
+$ep-font-size: 16px;
+$ep-input-font-size: 14px;
+$ep-border-size: 1px;
+
+$ep-width: $ep-emoji-width * 7 + ($ep-padding-results * 2);
+
+$ep-height: 
+  $ep-emoji-width * (5 + 1) +
+  $ep-padding * 5 +
+  $ep-border-size * 4 +
+  $ep-input-font-size + 3px +
+  $ep-font-size + 3px +
+  $ep-padding * 2;

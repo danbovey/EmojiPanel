@@ -1,13 +1,54 @@
-![EmojiPanel Logo](http://i.imgur.com/Os8izFU.png)
-# EmojiPanel
+[![npm version](https://badge.fury.io/js/angular2-emoji-picker.svg)](https://badge.fury.io/js/angular2-emoji-picker)
 
-> A customisable Javascript emoji picker
+# Emoji picker for Angular
 
-EmojiPanel is a Javascript emoji picker that used to be a popular Chrome extension for Twitter! View the examples on our project page: [emojipanel.js.org](https://emojipanel.js.org).
+This project was forked from the [EmojiPanel](https://github.com/danbovey/EmojiPanel) project created by [DanBovey](https://github.com/danbovey)
 
-![Preview](http://i.imgur.com/AvbH2ds.png)
+It's pretty basic right now, not very customizable but propagates necessary emoji selection events and comes with basic search and category selection functionalities.
 
-- ✏️ Select and write emoji using any sprite sheet
-- 📊 Keeps track of users frequently used emojis
-- 🎛 A lot of options & customisable SCSS styles
-- 📡 Listen for events such as `select` or `search`
+[Demo](https://lsharir.github.io/angular2-emoji-picker/)
+
+
+### Usage:
+
+```
+import { EmojiPickerModule } from 'angular-emoji-picker';
+
+@NgModule({
+  ...
+  imports: [
+    EmojiPickerModule.forRoot()
+  ],
+  ...
+})
+export class AppModule {}
+
+```
+
+### Directive API:
+
+```
+<i
+    (click)="toggled = !toggled"
+    [(emojiPickerIf)]="toggled"
+    [emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
+    (emojiPickerSelect)="handleSelection($event)">😄</i>
+```
+
+### Emitter `(emojiPickerSelect)="handleSelection($event)"`
+
+```
+$event = EmojiEvent{ char : "😌", label : "relieved" }
+```
+
+## EmojiPickerCaretEmitter
+
+added for your convenience, emits information regarding a contenteditable enabled element
+
+### Emitter `(emojiPickerCaretEmitter)="handleCaretChange($event)"`
+
+```
+$event = CaretEvent{ caretOffset: 13, caretRange: Range{...}, textContent: 'content of div or input' }
+```
+
+Emoji Picker will get placed relative the element chosen via the directive api, centered and within window borders

@@ -1,0 +1,16 @@
+@import '_constants';
+
+:host {
+  overflow-y: auto;
+}
+
+.emoji-list {
+  padding: 0 $ep-padding-results $ep-padding-results;
+}
+
+.emoji-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: $ep-margin/2 0;
+}

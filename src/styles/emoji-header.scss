@@ -1,0 +1,9 @@
+@import '_constants';
+
+:host {
+  display: block;
+  border-bottom: 1px solid $ep-border-header;
+  border-radius: $ep-border-radius $ep-border-radius 0 0;
+  padding: $ep-padding-results;
+  background: $ep-background-header;
+}

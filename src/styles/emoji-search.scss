@@ -1,0 +1,15 @@
+@import '_constants';
+
+input {
+  width: 100%;
+  padding: $ep-padding/2 $ep-padding;
+  border: $ep-border-size solid $ep-border-input;
+  outline: none;
+  font-size: $ep-input-font-size;
+  font-weight: inherit;
+  box-sizing: border-box;
+
+  &:focus {
+      border-color: darken($ep-border-input, 10%);
+  }
+}
