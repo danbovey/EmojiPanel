@@ -1,7 +1,7 @@
 ![EmojiPanel Logo](http://i.imgur.com/Os8izFU.png)
 # EmojiPanel
 
-## ⚠️ EmojiPanel is in development and a full release is not available yet. If you would like to contribute with needed features, please look at issues marked [help wanted](https://github.com/danbovey/EmojiPanel/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22). ⚠️
+## ⚠️ EmojiPanel is in development and a full release is not available yet. If you would like to contribute with needed features, please look at issues marked [help wanted](https://github.com/danbovey/EmojiPanel/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22).
 
 > A customisable Javascript emoji picker
 
