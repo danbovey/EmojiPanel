@@ -41,7 +41,7 @@ const Emojis = {
     },
     createEl: (emoji, options) => {
         if(options.pack_url) {
-            if(document.querySelector(`.${options.classnames.svg} [id="${emoji.unicode}"`)) {
+            if(document.querySelector(`.${options.classnames.svg} [id="${emoji.unicode}"]`)) {
                 return `<svg viewBox="0 0 20 20"><use xlink:href="#${emoji.unicode}"></use></svg>`;
             }
         }
@@ -130,7 +130,7 @@ const Emojis = {
         let content = emojiAware.split(div.textContent);
         content.splice(offset, 0, emoji.char);
         content = content.join('');
-        
+
         div.textContent = content;
 
         // Trigger a refresh of the input
