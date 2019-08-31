@@ -4,7 +4,7 @@ const Emojis = {
     load: options => {
         // Load and inject the SVG sprite into the DOM
         let svgPromise = Promise.resolve();
-        if(options.pack_url && !document.querySelector(options.classnames.svg)) {
+        if(options.pack_url && !document.querySelector(`.${options.classnames.svg}`)) {
             svgPromise = new Promise(resolve => {
                 const svgXhr = new XMLHttpRequest();
                 svgXhr.open('GET', options.pack_url, true);
