@@ -1,5 +1,5 @@
 const modifiers = require('./modifiers');
-const Frequent = require('./frequent');
+import Frequent from './frequent';
 
 const Emojis = {
     load: options => {
@@ -76,7 +76,6 @@ const Emojis = {
         if(emit) {
             button.addEventListener('click', () => {
                 emit('select', emoji);
-
                 if (options.frequent == true &&
                     Frequent.add(emoji)) {
                     Emojis.createButton(emoji, options, emit);
