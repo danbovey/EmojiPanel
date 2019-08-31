@@ -1,4 +1,5 @@
 const modifiers = require('./modifiers');
+const Frequent = require('./frequent');
 
 const Emojis = {
     load: options => {
@@ -76,6 +77,11 @@ const Emojis = {
             button.addEventListener('click', () => {
                 emit('select', emoji);
 
+                if (options.frequent == true &&
+                    Frequent.add(emoji)) {
+                    Emojis.createButton(emoji, options, emit);
+                }
+
                 if(options.editable) {
                     Emojis.write(emoji, options);
                 }
@@ -140,10 +146,6 @@ const Emojis = {
 
         // Update the offset to after the inserted emoji
         input.dataset.offset = parseInt(input.dataset.offset, 10) + 1;
-
-        if(options.frequent == true) {
-            Frequent.add(emoji, Emojis.createButton);
-        }
     }
 };
 
