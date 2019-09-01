@@ -26,28 +26,27 @@
   },
   "homepage": "https://emojipanel.js.org",
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.0",
-    "babelify": "^7.3.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^8.0.0",
     "char-spinner": "^1.0.1",
-    "colors": "^1.1.2",
-    "emojione": "^2.2.7",
+    "colors": "^1.3.3",
+    "emojione": "^4.5.0",
     "github-download": "^0.5.0",
-    "gulp": "^3.9.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-svg-sprite": "^1.3.6",
-    "gulp-uglify": "^2.1.0",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-svg-sprite": "^1.5.0",
+    "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.8",
-    "http-server": "^0.9.0",
-    "twemoji": "https://github.com/twitter/twemoji/tarball/gh-pages",
-    "run-sequence": "^1.2.2",
-    "underscore": "^1.8.3",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.9.0"
+    "http-server": "^0.11.1",
+    "underscore": "^1.9.1",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
   },
   "dependencies": {
     "fbemitter": "^2.1.1",
-    "tether": "^1.4.0"
+    "tether": "^1.4.7"
   }
 }
