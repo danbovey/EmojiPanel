@@ -78,7 +78,10 @@ const Emojis = {
                 emit('select', emoji);
                 if (options.frequent == true &&
                     Frequent.add(emoji)) {
-                    Emojis.createButton(emoji, options, emit);
+                    let frequentResults = document.querySelector(`.${options.classnames.frequentResults}`);
+
+                    frequentResults.appendChild(Emojis.createButton(emoji, options, emit));
+                    frequentResults.style.display = 'block';
                 }
 
                 if(options.editable) {

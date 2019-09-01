@@ -4,7 +4,7 @@ module.exports = {
     panel,
     open: panel + '--open',
     trigger: panel + '--trigger',
-    
+
     emoji: 'emoji',
     svg: panel + '__svg',
 
@@ -16,6 +16,7 @@ module.exports = {
     searchInput: panel + '__queryInput',
     searchTitle: panel + '__searchTitle',
     frequentTitle: panel + '__frequentTitle',
+    frequentResults: panel + '__frequentResults',
 
     results: panel + '__results',
     noResults: panel + '__noResults',

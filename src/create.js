@@ -52,7 +52,7 @@ const Create = (options, emit, toggle) => {
         categoryLink.classList.add('temp');
         categories.appendChild(categoryLink);
     }
-    
+
     // Create the list
     results = document.createElement('div');
     results.classList.add(options.classnames.results);
@@ -88,38 +88,33 @@ const Create = (options, emit, toggle) => {
     }
 
     if(options.frequent == true) {
-        let frequentList = localStorage.getItem('EmojiPanel-frequent');
-        if(frequentList) {
-            frequentList = JSON.parse(frequentList);
-        } else {
-            frequentList = [];
-        }
+        const frequentResults = document.createElement('div');
+
+        frequentResults.classList.add(options.classnames.frequentResults);
+        frequentResults.style.display = 'none';
+
         frequentTitle = document.createElement('p');
         frequentTitle.classList.add(options.classnames.category, options.classnames.frequentTitle);
         frequentTitle.innerHTML = options.locale.frequent;
-        if(frequentList.length == 0) {
-            frequentTitle.style.display = 'none';
-        }
-        results.appendChild(frequentTitle);
+        frequentResults.appendChild(frequentTitle);
 
-        const frequentResults = document.createElement('div');
-        frequentResults.classList.add('EmojiPanel-frequent');
-
-        frequentList.forEach(emoji => {
-            frequentResults.appendChild(Emojis.createButton(emoji, options, emit));
-        });
         results.appendChild(frequentResults);
     }
+
+    const loadingResults = document.createElement('div');
+    loadingResults.classList.add('EmojiPanel-loading');
 
     const loadingTitle = document.createElement('p');
     loadingTitle.classList.add(options.classnames.category);
     loadingTitle.textContent = options.locale.loading;
-    results.appendChild(loadingTitle);
+    loadingResults.appendChild(loadingTitle);
     for(let i = 0; i < 9 * 8; i++) {
         const tempEmoji = document.createElement('button');
         tempEmoji.classList.add('temp');
-        results.appendChild(tempEmoji);
+        loadingResults.appendChild(tempEmoji);
     }
+
+    results.appendChild(loadingResults);
 
     const footer = document.createElement('footer');
     footer.classList.add(options.classnames.footer);
@@ -193,7 +188,7 @@ const getCaretPosition = el => {
         preCaretTextRange.setEndPoint('EndToEnd', textRange);
         caretOffset = preCaretTextRange.text.length;
     }
-    
+
     return caretOffset;
 };
 
