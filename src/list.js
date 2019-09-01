@@ -30,7 +30,7 @@ const list = (options, panel, json, emit) => {
             const title = options.container.querySelector('#' + category.name);
             results.scrollTop = title.offsetTop - results.offsetTop;
         });
-        categories.appendChild(categoryLink);        
+        categories.appendChild(categoryLink);
     });
 
     // Handle the search input
@@ -102,6 +102,8 @@ const list = (options, panel, json, emit) => {
                     }
                 }
             }
+
+            results.scrollTop = 0;
         });
     }
 
