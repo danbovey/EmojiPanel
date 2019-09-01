@@ -13,6 +13,7 @@ const defaults = {
 
     pack_url: null,
     json_url: '/emojis.json',
+    json_save_local: false,
 
     tether: true,
     placement: 'bottom',
@@ -58,7 +59,7 @@ export default class EmojiPanel extends EventEmitter {
     toggle() {
         const open = this.panel.classList.toggle(this.options.classnames.open);
         const searchInput = this.panel.querySelector('.' + this.options.classnames.searchInput);
-            
+
         this.emit('toggle', open);
         if(open && this.options.search && searchInput) {
             searchInput.focus();
