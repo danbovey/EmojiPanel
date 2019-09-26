@@ -5,7 +5,7 @@ const list = (options, panel, json, emit) => {
     const categories = panel.querySelector('.' + options.classnames.categories);
     const searchInput = panel.querySelector('.' + options.classnames.searchInput);
     const searchTitle = panel.querySelector('.' + options.classnames.searchTitle);
-    const frequentTitle = panel.querySelector('.' + options.classnames.frequentTitle);
+    const frequentResults = panel.querySelector('.' + options.classnames.frequentResults);
     const results = panel.querySelector('.' + options.classnames.results);
     const emptyState = panel.querySelector('.' + options.classnames.noResults);
     const footer = panel.querySelector('.' + options.classnames.footer);
@@ -38,13 +38,6 @@ const list = (options, panel, json, emit) => {
         searchInput.addEventListener('input', e => {
             const emojis = results.querySelectorAll('.' + options.classnames.emoji);
             const titles = results.querySelectorAll('.' + options.classnames.category);
-
-            let frequentList = localStorage.getItem('EmojiPanel-frequent');
-            if(frequentList) {
-                frequentList = JSON.parse(frequentList);
-            } else {
-                frequentList = [];
-            }
 
             const value = e.target.value.replace(/-/g, '').toLowerCase();
             if(value.length > 0) {
@@ -82,7 +75,7 @@ const list = (options, panel, json, emit) => {
                 searchTitle.style.display = 'block';
 
                 if(options.frequent == true) {
-                    frequentTitle.style.display = 'none';
+                    frequentResults.style.display = 'none';
                 }
             } else {
                 [].forEach.call(emojis, emoji => {
@@ -94,11 +87,18 @@ const list = (options, panel, json, emit) => {
                 searchTitle.style.display = 'none';
                 emptyState.style.display = 'none';
 
+                let frequentList = localStorage.getItem('EmojiPanel-frequent');
+                if(frequentList) {
+                    frequentList = JSON.parse(frequentList);
+                } else {
+                    frequentList = [];
+                }
+
                 if(options.frequent == true) {
                     if(frequentList.length > 0) {
-                        frequentTitle.style.display = 'block';
+                        frequentResults.style.display = 'block';
                     } else {
-                        frequentTitle.style.display = 'none';
+                        frequentResults.style.display = 'none';
                     }
                 }
             }
@@ -108,9 +108,29 @@ const list = (options, panel, json, emit) => {
     }
 
     // Fill the results with emojis
-    while (results.firstChild) {
-        results.removeChild(results.firstChild);
+    results.querySelector('.EmojiPanel-loading').remove();
+
+    if(options.frequent == true) {
+        let frequentList = localStorage.getItem('EmojiPanel-frequent');
+        if(frequentList) {
+            frequentList = JSON.parse(frequentList);
+        } else {
+            frequentList = [];
+        }
+
+        if(frequentList.length == 0) {
+            frequentResults.style.display = 'none';
+        } else {
+            frequentResults.style.display = 'block';
+        }
+
+        frequentList.forEach(emoji => {
+            frequentResults.appendChild(Emojis.createButton(emoji, options, emit));
+        });
+
+        results.appendChild(frequentResults);
     }
+
     Object.keys(json).forEach(i => {
         const category = json[i];
 

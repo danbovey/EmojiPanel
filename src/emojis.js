@@ -1,10 +1,12 @@
 const modifiers = require('./modifiers');
+import Frequent from './frequent';
+
 let json = null;
 const Emojis = {
     load: options => {
         // Load and inject the SVG sprite into the DOM
         let svgPromise = Promise.resolve();
-        if(options.pack_url && !document.querySelector(options.classnames.svg)) {
+        if(options.pack_url && !document.querySelector(`.${options.classnames.svg}`)) {
             svgPromise = new Promise(resolve => {
                 const svgXhr = new XMLHttpRequest();
                 svgXhr.open('GET', options.pack_url, true);
@@ -86,6 +88,13 @@ const Emojis = {
         if(emit) {
             button.addEventListener('click', () => {
                 emit('select', emoji);
+                if (options.frequent == true &&
+                    Frequent.add(emoji)) {
+                    let frequentResults = document.querySelector(`.${options.classnames.frequentResults}`);
+
+                    frequentResults.appendChild(Emojis.createButton(emoji, options, emit));
+                    frequentResults.style.display = 'block';
+                }
 
                 if(options.editable) {
                     Emojis.write(emoji, options);
@@ -151,10 +160,6 @@ const Emojis = {
 
         // Update the offset to after the inserted emoji
         input.dataset.offset = parseInt(input.dataset.offset, 10) + 1;
-
-        if(options.frequent == true) {
-            Frequent.add(emoji, Emojis.createButton);
-        }
     }
 };
 
