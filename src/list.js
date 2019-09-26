@@ -102,6 +102,8 @@ const list = (options, panel, json, emit) => {
                     }
                 }
             }
+
+            results.scrollTop = 0;
         });
     }
 
